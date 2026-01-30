@@ -12,20 +12,23 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
 - **High-Stakes Gameplay**: Bet on High (4-6), Low (1-3), or Triple (Exact Matches).
 - **Progression System**:
   - **Upgrades**: Purchase "Loaded Dice", "Safety Nets", "Lucky Charms", and more from the Upgrade Shop.
-  - **Classes**: Unlock and choose different classes like the *Gambler* or *Hacker* for unique bonuses.
-  - **Achievements**: Track your feats and earn rewards.
-- **Multi-Dice System**: Access levels unlock more dice (1-4) for bigger visual spectacle.
-  - **Recruit**: 1 Die
-  - **Hacker**: 2 Dice
-  - **Elite**: 3 Dice
-  - **Admin**: 4 Dice
+  - **Expanded Class System**: 8 New Buyable Classes!
+  - **Automaton (Bot)**: Immunity to Heat.
+  - **High Roller (Sniper)**: Triple bets pay 4x.
+  - **Broker (Merchant)**: Cheaper upgrades.
+  - **Leech (Vampire)**: Recover chips on loss.
+  - **Pre-Cog (Timekeeper)**: Cheaper Overclocks.
+  - **Juggernaut (Titan)**: Massive Heat Capacity.
+  - **Zen (Monk)**: Double Streak Bonuses.
+  - **Ghost (Cipher)**: 25% Chance to refund losses.
+- **System Overload (Ultimate)**: Charge your meter by playing. Activate to guarantee 3 wins in a row!
+- **Multi-Dice System**: Visuals scale with your Access Level (1-4 dice).
 - **Infinite Progression (Rebirth)**:
   - Reach **ADMIN** level to break into the Mainframe Vault.
   - Reset your chips to gain permanent distinct **Rebirth Tiers**.
-  - Each rebirth grants **+5% Permanent Win Chance** but increases difficulty for the next run.
-- **Persistent State**: Your chips, upgrades, stats, and rebirth level are saved automatically.
-- **Daily Bonuses & Mystery Boxes**: Come back daily for free chips and try your luck with mystery rewards.
-- **Mobile & Desktop Compatible**: Fully responsive design works on phones, tablets, and laptops.
+  - Each rebirth grants **+5% Permanent Win Chance**.
+- **Update Log**: In-game "What's New" popup keeps you informed of changes.
+- **Mobile & Desktop Compatible**: Optimized UI for phones, tablets, and laptops.
 
 ## How to Play
 1. **Launch the Game**:

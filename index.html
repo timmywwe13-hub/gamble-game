@@ -2406,6 +2406,32 @@
                 left: 10px;
             }
 
+            .game-container {
+                padding-bottom: 150px;
+                /* Prevent fixed elements overlap */
+            }
+
+            .rebirth-badge {
+                font-size: 10px;
+                padding: 4px 10px;
+                max-width: 90%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            /* Compact status bar for mobile */
+            .status-bar {
+                padding: 4px 8px;
+                gap: 5px;
+                font-size: 8px;
+            }
+
+            .status-center {
+                display: none;
+                /* Hide center text on mobile to save space */
+            }
+
             .heat-label {
                 font-size: 8px;
             }
@@ -3441,6 +3467,7 @@
         const OVERCLOCK_COST = 50;
         const COMBO_DECAY_TIME = 10000; // 10 seconds
         const CRITICAL_HIT_CHANCE = 0.05; // 5% chance for 5x payout
+        const CURRENT_VERSION = '2.1';
 
         // Base access levels (before rebirth scaling)
         const BASE_ACCESS_LEVELS = [
@@ -3494,8 +3521,17 @@
             updateUltimateMeter();
             updateHeatDisplay();
             updateClassDisplay();
+            updateClassDisplay();
             updateRebirthDisplay(); // NEW: Rebirth badge
             createFloatingHearts();
+
+            // Auto-show updates if new version
+            const lastVersion = localStorage.getItem('lastSeenVersion');
+            if (lastVersion !== CURRENT_VERSION) {
+                renderUpdateLog();
+                showScreen('updates');
+                localStorage.setItem('lastSeenVersion', CURRENT_VERSION);
+            }
         }
 
         // Binary Background
