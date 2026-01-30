@@ -1893,6 +1893,667 @@
                 opacity: 0;
             }
         }
+
+        /* ========== RESPONSIVE DESIGN ========== */
+
+        /* Tablet / Small Laptop Breakpoint */
+        @media (max-width: 768px) {
+            .title-neon {
+                font-size: 48px;
+                letter-spacing: 4px;
+            }
+
+            .title-double-down {
+                font-size: 36px;
+                letter-spacing: 3px;
+            }
+
+            .tagline {
+                font-size: 14px;
+            }
+
+            .status-bar {
+                padding: 8px 15px;
+                font-size: 10px;
+            }
+
+            .status-center {
+                font-size: 9px;
+                letter-spacing: 1px;
+            }
+
+            .credits-display {
+                font-size: 18px;
+            }
+
+            .menu-buttons {
+                max-width: 320px;
+                gap: 12px;
+            }
+
+            .menu-btn {
+                font-size: 14px;
+                padding: 14px 30px;
+                letter-spacing: 2px;
+            }
+
+            .dice-container {
+                width: 160px;
+                height: 160px;
+            }
+
+            .dice-scene {
+                width: 120px;
+                height: 120px;
+            }
+
+            .dice-face {
+                width: 120px;
+                height: 120px;
+            }
+
+            .dice-face.front {
+                transform: translateZ(60px);
+            }
+
+            .dice-face.back {
+                transform: rotateY(180deg) translateZ(60px);
+            }
+
+            .dice-face.right {
+                transform: rotateY(90deg) translateZ(60px);
+            }
+
+            .dice-face.left {
+                transform: rotateY(-90deg) translateZ(60px);
+            }
+
+            .dice-face.top {
+                transform: rotateX(90deg) translateZ(60px);
+            }
+
+            .dice-face.bottom {
+                transform: rotateX(-90deg) translateZ(60px);
+            }
+
+            .pip {
+                width: 16px;
+                height: 16px;
+            }
+
+            .dice-legend {
+                display: none;
+            }
+
+            .streak-display {
+                top: 70px;
+                right: 10px;
+            }
+
+            .streak-value {
+                font-size: 16px;
+            }
+
+            .heat-display {
+                top: 70px;
+                left: 10px;
+            }
+
+            .heat-bar {
+                width: 100px;
+            }
+
+            .heat-level-text {
+                font-size: 12px;
+            }
+
+            .class-display {
+                top: 130px;
+                left: 10px;
+            }
+
+            .class-icon {
+                font-size: 28px;
+            }
+
+            .class-name {
+                font-size: 10px;
+            }
+
+            .class-ability {
+                font-size: 8px;
+                max-width: 80px;
+            }
+
+            .ultimate-meter {
+                bottom: 60px;
+                right: 10px;
+                width: 150px;
+            }
+
+            .ultimate-meter-label {
+                font-size: 8px;
+            }
+
+            .ultimate-btn {
+                font-size: 10px;
+                padding: 8px;
+            }
+
+            .combo-display {
+                bottom: 10px;
+                left: 10px;
+            }
+
+            .combo-value {
+                font-size: 18px;
+            }
+
+            .bet-type-btn {
+                font-size: 11px;
+                padding: 8px 15px;
+            }
+
+            .bet-amount-btn {
+                font-size: 12px;
+                padding: 10px 18px;
+            }
+
+            .action-btn {
+                font-size: 14px;
+                padding: 12px 30px;
+            }
+
+            .special-btn {
+                font-size: 10px;
+                padding: 8px 15px;
+            }
+
+            .modal-screen {
+                padding: 25px;
+                width: 95%;
+            }
+
+            .modal-title {
+                font-size: 22px;
+            }
+
+            .game-over-title {
+                font-size: 36px;
+            }
+
+            .upgrade-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            }
+
+            .achievements-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .class-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .end-run-modal {
+                padding: 25px;
+            }
+
+            .end-run-title {
+                font-size: 22px;
+            }
+
+            .love-title {
+                font-size: 28px;
+            }
+
+            .love-message {
+                font-size: 16px;
+            }
+        }
+
+        /* Mobile Breakpoint */
+        @media (max-width: 480px) {
+            .title-neon {
+                font-size: 32px;
+                letter-spacing: 2px;
+            }
+
+            .title-double-down {
+                font-size: 24px;
+                letter-spacing: 1px;
+                margin-top: -5px;
+            }
+
+            .tagline {
+                font-size: 12px;
+                letter-spacing: 1px;
+            }
+
+            .status-bar {
+                padding: 6px 10px;
+                font-size: 9px;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .status-center {
+                display: none;
+            }
+
+            .credits-display {
+                font-size: 16px;
+            }
+
+            .screen {
+                padding: 60px 10px 10px;
+            }
+
+            .menu-buttons {
+                max-width: 280px;
+                gap: 10px;
+            }
+
+            .menu-btn {
+                font-size: 12px;
+                padding: 12px 20px;
+                letter-spacing: 1px;
+            }
+
+            .dice-container {
+                width: 130px;
+                height: 130px;
+                margin-bottom: 20px;
+            }
+
+            .dice-scene {
+                width: 100px;
+                height: 100px;
+                margin: 15px auto;
+            }
+
+            .dice-face {
+                width: 100px;
+                height: 100px;
+                padding: 15px;
+            }
+
+            .dice-face.front {
+                transform: translateZ(50px);
+            }
+
+            .dice-face.back {
+                transform: rotateY(180deg) translateZ(50px);
+            }
+
+            .dice-face.right {
+                transform: rotateY(90deg) translateZ(50px);
+            }
+
+            .dice-face.left {
+                transform: rotateY(-90deg) translateZ(50px);
+            }
+
+            .dice-face.top {
+                transform: rotateX(90deg) translateZ(50px);
+            }
+
+            .dice-face.bottom {
+                transform: rotateX(-90deg) translateZ(50px);
+            }
+
+            .pip {
+                width: 12px;
+                height: 12px;
+                margin: 3px;
+            }
+
+            .dice-face[data-value="4"] {
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .dice-face[data-value="5"] {
+                gap: 12px;
+                padding: 18px;
+            }
+
+            .dice-face[data-value="6"] {
+                gap: 10px;
+                padding: 18px;
+            }
+
+            .streak-display {
+                top: auto;
+                bottom: 120px;
+                right: 10px;
+            }
+
+            .streak-label {
+                font-size: 8px;
+            }
+
+            .streak-value {
+                font-size: 14px;
+            }
+
+            .heat-display {
+                top: auto;
+                bottom: 120px;
+                left: 10px;
+            }
+
+            .heat-label {
+                font-size: 8px;
+            }
+
+            .heat-bar {
+                width: 80px;
+                height: 6px;
+            }
+
+            .heat-level-text {
+                font-size: 10px;
+            }
+
+            .class-display {
+                display: none;
+            }
+
+            .ultimate-meter {
+                bottom: 10px;
+                right: 10px;
+                left: 10px;
+                width: auto;
+            }
+
+            .ultimate-bar {
+                height: 10px;
+            }
+
+            .ultimate-btn {
+                font-size: 11px;
+                padding: 10px;
+                min-height: 44px;
+            }
+
+            .combo-display {
+                display: none;
+            }
+
+            .bet-types {
+                gap: 6px;
+            }
+
+            .bet-type-btn {
+                font-size: 10px;
+                padding: 8px 12px;
+                min-height: 44px;
+            }
+
+            .bet-amounts {
+                gap: 6px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .bet-amount-btn {
+                font-size: 11px;
+                padding: 10px 14px;
+                min-height: 44px;
+            }
+
+            .action-buttons {
+                gap: 10px;
+            }
+
+            .action-btn {
+                font-size: 12px;
+                padding: 12px 25px;
+                min-height: 48px;
+            }
+
+            .special-actions {
+                gap: 6px;
+            }
+
+            .special-btn {
+                font-size: 9px;
+                padding: 8px 12px;
+                min-height: 44px;
+            }
+
+            .modal-screen {
+                padding: 20px;
+                max-height: 90vh;
+            }
+
+            .modal-title {
+                font-size: 18px;
+                margin-bottom: 20px;
+            }
+
+            .modal-content {
+                font-size: 12px;
+            }
+
+            .close-btn {
+                font-size: 12px;
+                padding: 12px 25px;
+                min-height: 44px;
+            }
+
+            .game-over-title {
+                font-size: 28px;
+            }
+
+            .game-over-message {
+                font-size: 14px;
+            }
+
+            .upgrade-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .upgrade-item {
+                padding: 15px;
+            }
+
+            .upgrade-name {
+                font-size: 12px;
+            }
+
+            .upgrade-desc {
+                font-size: 10px;
+            }
+
+            .upgrade-cost {
+                font-size: 14px;
+            }
+
+            .achievements-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 8px;
+            }
+
+            .achievement-item {
+                padding: 10px;
+            }
+
+            .achievement-icon {
+                font-size: 24px;
+            }
+
+            .achievement-name {
+                font-size: 9px;
+            }
+
+            .achievement-desc {
+                font-size: 8px;
+            }
+
+            .class-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .class-card {
+                padding: 15px;
+            }
+
+            .class-card-icon {
+                font-size: 36px;
+            }
+
+            .class-card-name {
+                font-size: 12px;
+            }
+
+            .class-card-ability {
+                font-size: 10px;
+            }
+
+            .daily-bonus-banner {
+                padding: 25px;
+                width: 90%;
+            }
+
+            .daily-bonus-title {
+                font-size: 20px;
+            }
+
+            .daily-bonus-amount {
+                font-size: 36px;
+            }
+
+            .end-run-modal {
+                padding: 20px;
+            }
+
+            .end-run-title {
+                font-size: 18px;
+            }
+
+            .end-run-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .end-run-stat {
+                padding: 10px;
+            }
+
+            .end-run-stat-label {
+                font-size: 8px;
+            }
+
+            .end-run-stat-value {
+                font-size: 16px;
+            }
+
+            .end-run-rewards {
+                padding: 15px;
+            }
+
+            .end-run-rewards-title {
+                font-size: 14px;
+            }
+
+            .love-container {
+                padding: 20px;
+            }
+
+            .love-title {
+                font-size: 22px;
+            }
+
+            .love-message {
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .flower {
+                font-size: 36px;
+            }
+
+            .critical-hit {
+                font-size: 48px;
+            }
+
+            .toast {
+                padding: 12px 20px;
+                font-size: 12px;
+                left: 10px;
+                right: 10px;
+                transform: translateX(0) translateY(100px);
+                width: auto;
+            }
+
+            .toast.show {
+                transform: translateX(0) translateY(0);
+            }
+
+            .jackpot-mode-btn {
+                font-size: 12px;
+                padding: 10px 20px;
+                min-height: 44px;
+            }
+
+            .insurance-toggle {
+                font-size: 11px;
+            }
+
+            .insurance-checkbox {
+                width: 24px;
+                height: 24px;
+            }
+
+            .result-message {
+                font-size: 18px;
+            }
+
+            .current-bet-display {
+                font-size: 12px;
+            }
+
+            .access-progress {
+                max-width: 280px;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 360px) {
+            .title-neon {
+                font-size: 26px;
+            }
+
+            .title-double-down {
+                font-size: 20px;
+            }
+
+            .menu-btn {
+                font-size: 11px;
+                padding: 10px 15px;
+            }
+
+            .bet-type-btn {
+                font-size: 9px;
+                padding: 6px 10px;
+            }
+
+            .bet-amount-btn {
+                font-size: 10px;
+                padding: 8px 12px;
+            }
+
+            .upgrade-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .class-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
