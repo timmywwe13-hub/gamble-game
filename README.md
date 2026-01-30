@@ -21,11 +21,22 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
   - **Juggernaut (Titan)**: Massive Heat Capacity.
   - **Zen (Monk)**: Double Streak Bonuses.
   - **Ghost (Cipher)**: 25% Chance to refund losses.
+- **Map System**: Select your operation zone for unique visuals and bonuses.
+  - **Neon City**: Standard Environment.
+  - **Cyber District**: +10% Chips on every win (Gold Theme).
+  - **The Void**: High Risk? (Red Theme).
+- **New Classes**:
+  - **Glitch (Free)**: 1% Chance for massive 10x Multiplier.
+  - **Architect (Free)**: +10% Passive Chip gains.
+  - **Sovereign (Unlockable)**: Reach **100 Win Streak** to unlock "The House Edge" (2x Wins, Heat Immunity, 50% Refund).
+- **Real D6 RNG**: Authentic 1-6 dice logic for fair and predictable rolling.
+- **Smart Formatting**: Chips display as "1.2k", "56m", "1.5b" for readability.
 - **System Overload (Ultimate)**: Charge your meter by playing. Activate to guarantee 3 wins in a row!
 - **Multi-Dice System**: Visuals scale with your Access Level (1-4 dice).
 - **Infinite Progression (Rebirth)**:
   - Reach **ADMIN** level to break into the Mainframe Vault.
-  - Reset your chips to gain permanent distinct **Rebirth Tiers**.
+  - **Hard Mode Scaling**: Cost increases by 2.5x per rebirth.
+  - **Prestige**: Resets all Upgrades for a true challenge!
   - Each rebirth grants **+5% Permanent Win Chance**.
 - **Update Log**: In-game "What's New" popup keeps you informed of changes.
 - **Mobile & Desktop Compatible**: Optimized UI for phones, tablets, and laptops.

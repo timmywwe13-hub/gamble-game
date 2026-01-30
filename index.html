@@ -2744,6 +2744,77 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Map Themes */
+        body.cyber-theme .binary-bg {
+            color: rgba(255, 215, 0, 0.15);
+        }
+
+        body.cyber-theme .screen {
+            border-color: var(--yellow);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+
+        body.cyber-theme .dice-face {
+            border-color: var(--yellow);
+            box-shadow: 0 0 10px var(--yellow);
+        }
+
+        body.cyber-theme .pip {
+            background: var(--yellow);
+            box-shadow: 0 0 5px var(--yellow);
+        }
+
+        body.void-theme .binary-bg {
+            color: rgba(255, 0, 51, 0.15);
+        }
+
+        body.void-theme .screen {
+            border-color: var(--red);
+            box-shadow: 0 0 20px rgba(255, 0, 51, 0.2);
+        }
+
+        body.void-theme .dice-face {
+            border-color: var(--red);
+            box-shadow: 0 0 10px var(--red);
+        }
+
+        body.void-theme .pip {
+            background: var(--red);
+            box-shadow: 0 0 5px var(--red);
+        }
+
+        .map-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .map-card {
+            padding: 15px;
+            border: 1px solid var(--text-dim);
+            background: rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .map-card:hover {
+            border-color: var(--cyan);
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        .map-card.selected {
+            border-color: var(--green);
+            box-shadow: 0 0 15px var(--green);
+        }
+
+        .map-card.cyber {
+            border-left: 5px solid var(--yellow);
+        }
+
+        .map-card.void {
+            border-left: 5px solid var(--red);
+        }
     </style>
 </head>
 
@@ -2878,6 +2949,7 @@
             <button class="menu-btn magenta" id="upgradeShopBtn">UPGRADE SHOP</button>
             <button class="menu-btn gold" id="achievementsBtn">🏆 ACHIEVEMENTS</button>
             <button class="menu-btn cyan" id="classSelectBtn">🎭 SELECT CLASS</button>
+            <button class="menu-btn green" id="mapSelectBtn">🗺️ SELECT MAP</button>
             <button class="menu-btn pink" id="lovePageBtn">💕 SPECIAL MESSAGE</button>
             <button class="menu-btn magenta" id="updatesBtn">📝 UPDATES</button>
         </div>
@@ -3063,6 +3135,20 @@
                 <!-- Populated by JS -->
             </div>
             <button class="close-btn" id="closeClassSelect">CONFIRM</button>
+        </div>
+    </div>
+
+    <!-- Map Selection Screen -->
+    <div class="screen" id="mapSelectScreen">
+        <div class="modal-screen">
+            <h2 class="modal-title">// SELECT SECTOR //</h2>
+            <p style="color: var(--text-dim); text-align: center; margin-bottom: 20px;">
+                Choose your operation zone. Different zones have different environmental effects.
+            </p>
+            <div class="map-grid" id="mapGrid">
+                <!-- Populated by JS -->
+            </div>
+            <button class="close-btn" id="closeMapSelect">CONFIRM</button>
         </div>
     </div>
 
@@ -3384,7 +3470,40 @@
                 cost: 75000,
                 ability: '25% Chance to fully refund a loss',
                 effect: { refundChance: 0.25 }
+            },
+            // NEW FREE CLASSES
+            {
+                id: 'glitch',
+                name: 'GLITCH',
+                icon: '👾',
+                cost: 0,
+                ability: '1% Chance for 10x Win Multiplier',
+                effect: { winMultiplierChance: 0.01, winMultiplier: 10 }
+            },
+            {
+                id: 'architect',
+                name: 'ARCHITECT',
+                icon: '📐',
+                cost: 0,
+                ability: 'Passive: +10% Chips on every win',
+                effect: { passiveWinBonus: 0.1 }
+            },
+            // NEW OP CLASS (Streak Reward)
+            {
+                id: 'sovereign',
+                name: 'SOVEREIGN',
+                icon: '👑',
+                cost: 0,
+                ability: 'THE HOUSE EDGE: 2x Winnings, No Heat, 50% Refund on Loss',
+                effect: { winMultiplier: 2, heatImmunity: true, refundChance: 0.5 }
             }
+        ];
+
+        // ========== MAP SYSTEM ==========
+        const MAPS = [
+            { id: 'default', name: 'NEON CITY', desc: 'Standard Operations', class: '' },
+            { id: 'cyber', name: 'CYBER DISTRICT', desc: 'High Tech Zone (+10% Chips)', class: 'cyber-theme' },
+            { id: 'void', name: 'THE VOID', desc: 'High Risk Area (Mystery Box Chance ++)', class: 'void-theme' }
         ];
 
         // ========== UPDATE LOG DATA ==========
@@ -3479,7 +3598,8 @@
 
         // Get access levels scaled by rebirth level
         function getAccessLevels() {
-            const multiplier = Math.pow(1.5, gameState.rebirthLevel);
+            // Harder scaling: 2.5x per level (was 1.5x)
+            const multiplier = Math.pow(2.5, gameState.rebirthLevel);
             return BASE_ACCESS_LEVELS.map(level => ({
                 name: level.name,
                 threshold: level.name === 'RECRUIT' ? 0 : Math.floor(level.threshold * multiplier)
@@ -3500,8 +3620,17 @@
             achievements: document.getElementById('achievementsScreen'),
             classSelect: document.getElementById('classSelectScreen'),
             love: document.getElementById('loveScreen'),
-            updates: document.getElementById('updatesScreen')
+            updates: document.getElementById('updatesScreen'),
+            mapSelect: document.getElementById('mapSelectScreen')
         };
+
+        // ========== HELPER FUNCTIONS ==========
+        function formatNumber(num) {
+            if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'b';
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'm';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
+            return num.toLocaleString();
+        }
 
         // ========== INITIALIZE ==========
         function init() {
@@ -3524,6 +3653,12 @@
             updateClassDisplay();
             updateRebirthDisplay(); // NEW: Rebirth badge
             createFloatingHearts();
+
+            // Apply saved map theme
+            if (gameState.currentMap) {
+                const map = MAPS.find(m => m.id === gameState.currentMap);
+                if (map && map.class) document.body.className = map.class;
+            }
 
             // Auto-show updates if new version
             const lastVersion = localStorage.getItem('lastSeenVersion');
@@ -3716,8 +3851,19 @@
                 // Increment rebirth level
                 gameState.rebirthLevel++;
 
-                // Reset chips to base amount
+                // Reset chips and heat
                 gameState.chips = 1250;
+                gameState.heatLevel = 20;
+
+                // NEW: Reset Upgrades for harder challenge
+                gameState.upgrades = {
+                    safetyNet: false,
+                    luckyCharm: false,
+                    doubleDown: false,
+                    vaultAnalyzer: false,
+                    luckyPenny: false,
+                    loadedDice: false
+                };
 
                 // Reset run stats
                 gameState.runWins = 0;
@@ -3726,15 +3872,13 @@
                 gameState.runMaxStreak = 0;
                 gameState.runStartChips = 1250;
 
-                // Keep streak and combo as rewards carry over
-                gameState.heatLevel = 20;
-
                 // Show toast with new level requirement
                 const newLevels = getAccessLevels();
-                showToast(`🔥 REBIRTH ${gameState.rebirthLevel}/9! Next ADMIN: ${newLevels[3].threshold.toLocaleString()} chips (+5% win bonus)`);
+                showToast(`🔥 REBIRTH ${gameState.rebirthLevel}/9! Upscaling Difficulty... Next ADMIN: ${newLevels[3].threshold.toLocaleString()}`);
 
                 // Update everything
                 renderDice();
+                renderUpgrades(); // Re-render upgrades as they are reset
                 updateDisplay();
                 updateRebirthDisplay();
                 updateVaultBreakButton();
@@ -3768,6 +3912,13 @@
                 gameState.maxStreak = gameState.winStreak;
             }
             updateStreakDisplay();
+
+            // CHECK FOR SOVEREIGN UNLOCK (100 Streak)
+            if (gameState.winStreak >= 100 && !gameState.unlockedClasses.includes('sovereign')) {
+                gameState.unlockedClasses.push('sovereign');
+                showToast('👑 SOVEREIGN CLASS UNLOCKED! (100 Streak!)');
+                saveGame();
+            }
         }
 
         function onLoseStreak() {
@@ -3920,7 +4071,7 @@
 
                 let costHtml = '';
                 if (!isUnlocked) {
-                    costHtml = `<div class="class-cost">${cls.cost.toLocaleString()} <span style="font-size:12px">CHIPS</span></div>`;
+                    costHtml = `<div class="class-cost">${formatNumber(cls.cost)} <span style="font-size:12px">CHIPS</span></div>`;
                     if (!canAfford) card.classList.add('disabled');
                 } else if (isSelected) {
                     costHtml = `<div class="class-cost" style="color:var(--cyan)">ACTIVE</div>`;
@@ -3938,13 +4089,19 @@
         }
 
         function selectClass(cls) {
-            // Check if already unlocked
-            if (!cls.cost || gameState.unlockedClasses.includes(cls.id)) {
+            console.log('Selecting class:', cls.id, 'Cost:', cls.cost, 'Current Class:', gameState.selectedClass);
+
+            // Fix: Explicitly check for 0 cost (free classes) or ownership
+            const isFree = cls.cost === 0 || cls.cost === undefined;
+            const isOwned = gameState.unlockedClasses.includes(cls.id);
+
+            if (isFree || isOwned) {
                 gameState.selectedClass = cls.id;
                 renderClasses();
                 updateClassDisplay();
                 playSound('click');
                 saveGame();
+                console.log('Class selected successfully');
             } else {
                 // Try to buy
                 if (gameState.chips >= cls.cost) {
@@ -3961,6 +4118,7 @@
                         renderClasses();
                         updateClassDisplay();
                         saveGame();
+                        console.log('Class purchased and selected');
                     }
                 } else {
                     playSound('error');
@@ -4033,6 +4191,54 @@
             return cls?.effect?.refundChance || 0;
         }
 
+        function getClassWinMultiplierChance() {
+            const cls = CHARACTER_CLASSES.find(c => c.id === gameState.selectedClass);
+            return cls?.effect?.winMultiplierChance || 0;
+        }
+
+        function getClassWinMultiplier() {
+            const cls = CHARACTER_CLASSES.find(c => c.id === gameState.selectedClass);
+            return cls?.effect?.winMultiplier || 1;
+        }
+
+        function getClassPassiveWinBonus() {
+            const cls = CHARACTER_CLASSES.find(c => c.id === gameState.selectedClass);
+            return cls?.effect?.passiveWinBonus || 0;
+        }
+
+        // ========== MAP SYSTEM LOGIC ==========
+        function renderMaps() {
+            const grid = document.getElementById('mapGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            MAPS.forEach(map => {
+                const isSelected = gameState.currentMap === map.id;
+                const el = document.createElement('div');
+                el.className = `map-card ${map.id} ${isSelected ? 'selected' : ''}`;
+                el.innerHTML = `
+                    <div style="font-weight:bold; color:var(--cyan); margin-bottom:5px;">${map.name}</div>
+                    <div style="font-size:12px; color:var(--text-dim);">${map.desc}</div>
+                    ${isSelected ? '<div style="color:var(--green); font-size:12px; margin-top:5px;">ACTIVE</div>' : ''}
+                `;
+                el.onclick = () => selectMap(map.id);
+                grid.appendChild(el);
+            });
+        }
+
+        function selectMap(mapId) {
+            gameState.currentMap = mapId;
+            const map = MAPS.find(m => m.id === mapId);
+
+            // Apply theme
+            document.body.className = map.class || '';
+
+            playSound('click');
+            showToast(`🗺️ Travelling to ${map.name}...`);
+            saveGame();
+            renderMaps();
+        }
+
         // ========== END OF RUN REWARDS ==========
         function startNewRun() {
             gameState.runWins = 0;
@@ -4055,7 +4261,7 @@
             document.getElementById('endRunWins').textContent = gameState.runWins;
             document.getElementById('endRunLosses').textContent = gameState.runLosses;
             document.getElementById('endRunStreak').textContent = gameState.runMaxStreak;
-            document.getElementById('endRunChips').textContent = chipsEarned.toLocaleString();
+            document.getElementById('endRunChips').textContent = formatNumber(chipsEarned);
 
             // Calculate rewards
             const rewards = [];
@@ -4063,7 +4269,7 @@
             // Base reward for playing
             const baseReward = Math.floor(gameState.runWins * 50);
             if (baseReward > 0) {
-                rewards.push({ label: 'Win Bonus', value: '+' + baseReward + ' chips' });
+                rewards.push({ label: 'Win Bonus', value: '+' + formatNumber(baseReward) + ' chips' });
             }
 
             // Streak bonus
@@ -4076,21 +4282,21 @@
                 // Bot: Half streak bonus
                 if (gameState.selectedClass === 'bot') streakBonus = Math.floor(streakBonus * 0.5);
 
-                rewards.push({ label: 'Streak Bonus (' + gameState.runMaxStreak + ')', value: '+' + streakBonus + ' chips' });
+                rewards.push({ label: 'Streak Bonus (' + gameState.runMaxStreak + ')', value: '+' + formatNumber(streakBonus) + ' chips' });
                 gameState.chips += streakBonus;
             }
 
             // Win rate bonus
             if (winRate >= 60) {
                 const winRateBonus = Math.floor(winRate * 5);
-                rewards.push({ label: 'Win Rate Bonus (' + winRate + '%)', value: '+' + winRateBonus + ' chips' });
+                rewards.push({ label: 'Win Rate Bonus (' + winRate + '%)', value: '+' + formatNumber(winRateBonus) + ' chips' });
                 gameState.chips += winRateBonus;
             }
 
             // Survivor bonus (made it back with chips)
             if (gameState.chips > gameState.runStartChips) {
                 const profitBonus = Math.floor((gameState.chips - gameState.runStartChips) * 0.1);
-                rewards.push({ label: 'Profit Bonus (10%)', value: '+' + profitBonus + ' chips' });
+                rewards.push({ label: 'Profit Bonus (10%)', value: '+' + formatNumber(profitBonus) + ' chips' });
                 gameState.chips += profitBonus;
             }
 
@@ -4338,7 +4544,7 @@
 
         // Display Updates
         function updateDisplay() {
-            document.getElementById('creditsDisplay').textContent = gameState.chips.toLocaleString();
+            document.getElementById('creditsDisplay').textContent = formatNumber(gameState.chips);
 
             const levels = getAccessLevels();
 
@@ -4439,7 +4645,7 @@
                 item.innerHTML = `
                     <div class="upgrade-name">${upgrade.name}</div>
                     <div class="upgrade-desc">${upgrade.desc}</div>
-                    <div class="upgrade-cost">${owned ? 'OWNED' : realCost.toLocaleString() + ' CHIPS'}</div>
+                    <div class="upgrade-cost">${owned ? 'OWNED' : formatNumber(realCost) + ' CHIPS'}</div>
                 `;
 
                 if (!owned && canAfford) {
@@ -4465,8 +4671,10 @@
 
         // Game Logic - Generate roll with Lucky Penny support
         function generateRoll() {
+            // FIX: Standard D6 Logic (1-6)
+            // Lucky Penny now ensures minimum roll of 2 (so 2-6)
             const minRoll = gameState.upgrades.luckyPenny ? 2 : 1;
-            const maxRoll = 10;
+            const maxRoll = 6;
             return Math.floor(Math.random() * (maxRoll - minRoll + 1)) + minRoll;
         }
 
@@ -4498,10 +4706,10 @@
                 // Set appropriate winning value
                 switch (gameState.currentBetType) {
                     case 'double':
-                        finalValue = '✓';
+                        finalValue = Math.random() > 0.5 ? 4 : 5; // Win is 4, 5, 6
                         break;
                     case 'highlow':
-                        finalValue = 5 + Math.floor(Math.random() * 5);
+                        finalValue = 5; // High win
                         break;
                     case 'triple':
                         finalValue = '★';
@@ -4511,18 +4719,53 @@
                 return { won, finalValue };
             }
 
+            // Standard Logic: Roll vs Bet Type
             switch (gameState.currentBetType) {
                 case 'double':
+                    // Standard: 50/50 win logic + bonuses
+                    // Logic: Roll 4-6 is WIN, 1-3 is LOSE (Simulated by 50% + bonus)
                     won = Math.random() < (0.5 + bonusChance);
-                    finalValue = won ? '✓' : '✗';
+
+                    // Force the roll to match the result
+                    if (won) {
+                        // Ensure roll is 4, 5, or 6
+                        if (finalValue <= 3) finalValue = Math.floor(Math.random() * 3) + 4;
+                    } else {
+                        // Ensure roll is 1, 2, or 3
+                        if (finalValue >= 4) finalValue = Math.floor(Math.random() * 3) + 1;
+                    }
                     break;
+
                 case 'highlow':
-                    won = Math.random() < (0.5 + bonusChance);
-                    finalValue = won ? (5 + Math.floor(Math.random() * 5)) : Math.floor(Math.random() * 5);
+                    // High: 4-6 wins. Low: 1-3 wins? 
+                    // Wait, current UI logic implies High/Low is just a variant?
+                    // Let's assume High/Low means:
+                    // High (4-6) pays out? Or player CHOOSES High vs Low?
+                    // The UI currently just has "Double", "High/Low", "Triple".
+                    // Assuming "High/Low" button implies High Risk / Low Risk? 
+                    // Or choosing range... 
+                    // Existing logic was: won 50% time, result random.
+
+                    // Let's clean this up:
+                    // Treat 'double' as Standard Bet (Evens/Odds or High/Low implicit 50/50).
+                    // Treat 'highlow' as High Risk?
+                    // Let's make HighLow actually require High Roll (4,5,6).
+
+                    // Strict D6 Logic:
+                    won = finalValue >= 4;
+
+                    // Apply bonus chance modification
+                    if (!won && Math.random() < bonusChance) {
+                        won = true;
+                        finalValue = Math.floor(Math.random() * 3) + 4; // Force win
+                    }
                     break;
+
                 case 'triple':
+                    // Hard Mode: Needs 3 of a kind (Triple) or Triple Yield?
+                    // Legacy logic: 1/3 chance.
                     won = Math.random() < (0.33 + bonusChance);
-                    finalValue = won ? '★' : Math.floor(Math.random() * 3) + 1;
+                    if (won) finalValue = '★'; // Special symbol
                     break;
             }
 
@@ -4561,7 +4804,26 @@
                     showCriticalHit();
                 }
 
-                const winnings = Math.floor(betAmount * multiplier);
+                // Glitch Class: Chance for massive multiplier
+                if (getClassWinMultiplierChance() > 0 && Math.random() < getClassWinMultiplierChance()) {
+                    multiplier = getClassWinMultiplier(); // Sets to 10x
+                    showToast('👾 GLITCH PROTOCOL EXECUTED: 10x PAYOUT!');
+                    spawnParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff00ff', 100);
+                }
+
+                let winnings = Math.floor(betAmount * multiplier);
+
+                // Architect Class: Passive bonus on win
+                if (getClassPassiveWinBonus() > 0) {
+                    const extra = Math.floor(winnings * getClassPassiveWinBonus());
+                    winnings += extra;
+                }
+
+                // MAP BONUS: Cyber District (+10%)
+                if (gameState.currentMap === 'cyber') {
+                    const mapBonus = Math.floor(winnings * 0.1);
+                    winnings += mapBonus;
+                }
 
                 if (!isReroll) {
                     gameState.chips += winnings - betAmount;
@@ -4593,9 +4855,9 @@
                 vaultDisplay.classList.add('win');
 
                 if (isCritical) {
-                    resultMessage.textContent = `CRITICAL! +${winnings.toLocaleString()} CHIPS!`;
+                    resultMessage.textContent = `CRITICAL! +${formatNumber(winnings)} CHIPS!`;
                 } else {
-                    resultMessage.textContent = `+${winnings.toLocaleString()} CHIPS!`;
+                    resultMessage.textContent = `+${formatNumber(winnings)} CHIPS!`;
                 }
                 resultMessage.classList.add('win', 'show');
 
@@ -5014,12 +5276,20 @@
             document.getElementById('closeClassSelect').onclick = () => { playSound('click'); showScreen('menu'); };
             document.getElementById('closeLovePage').onclick = () => { playSound('click'); showScreen('menu'); };
             document.getElementById('closeUpdates').onclick = () => { playSound('click'); showScreen('menu'); };
+            document.getElementById('closeMapSelect').onclick = () => { playSound('click'); showScreen('menu'); };
 
             // NEW: Updates button
             document.getElementById('updatesBtn').onclick = () => {
                 renderUpdateLog();
                 playSound('click');
                 showScreen('updates');
+            };
+
+            // NEW: Map button
+            document.getElementById('mapSelectBtn').onclick = () => {
+                renderMaps();
+                playSound('click');
+                showScreen('mapSelect');
             };
 
             // Game buttons
@@ -5127,7 +5397,10 @@
                 selectedClass: gameState.selectedClass,
                 // NEW: Rebirth data & Unlocked Classes
                 rebirthLevel: gameState.rebirthLevel,
-                unlockedClasses: gameState.unlockedClasses
+                // NEW: Rebirth data & Unlocked Classes
+                rebirthLevel: gameState.rebirthLevel,
+                unlockedClasses: gameState.unlockedClasses,
+                currentMap: gameState.currentMap
             }));
         }
 
@@ -5162,6 +5435,7 @@
                 // NEW: Load rebirth data
                 gameState.rebirthLevel = data.rebirthLevel || 0;
                 gameState.unlockedClasses = data.unlockedClasses || ['gambler'];
+                gameState.currentMap = data.currentMap || 'default';
 
                 // Apply settings
                 document.getElementById('toggleSound').classList.toggle('active', gameState.settings.sound);
