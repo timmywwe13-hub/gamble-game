@@ -18,7 +18,9 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
 -   **Daily Bonuses & Mystery Boxes**: Come back daily for free chips and try your luck with mystery rewards.
 
 ## How to Play
-1.  **Launch the Game**: simply open `neon-double-down.html` in any modern web browser.
+1.  **Launch the Game**:
+    -   **Locally**: Open `index.html` in any modern web browser.
+    -   **On GitHub**: Visit your GitHub Pages URL (e.g., `https://your-username.github.io/gamble-game/`).
 2.  **Place Your Bet**:
     -   Select a bet type: **Low** (1-3), **High** (4-6), or **Triple** (Specific Numbers).
     -   Select an amount: 10, 50, 100, or **ALL IN**.
@@ -29,11 +31,12 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
 5.  **Game Over**: If you run out of chips (and have no Safety Net), your run ends. You can restart with the base amount.
 
 ## Deployment
-This game is a self-contained HTML file. To host it on GitHub Pages:
-1.  Upload `neon-double-down.html` to your repository.
-2.  Enable GitHub Pages in the repository settings.
-3.  Point the source to the branch/folder containing the file.
-4.  (Optional) Rename `neon-double-down.html` to `index.html` to make it the default landing page.
+To host this on GitHub Pages:
+1.  Upload `index.html` and `README.md` to your repository.
+2.  Go to **Settings** > **Pages** in your repository.
+3.  Under **Build and deployment**, set **Source** to `Deploy from a branch`.
+4.  Select your branch (usually `main` or `master`) and hit **Save**.
+5.  Your game will be live at the provided URL!
 
 ## Credits
 Built with vanilla HTML, CSS, and JavaScript.
