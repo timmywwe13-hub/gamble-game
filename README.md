@@ -14,7 +14,16 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
   - **Upgrades**: Purchase "Loaded Dice", "Safety Nets", "Lucky Charms", and more from the Upgrade Shop.
   - **Classes**: Unlock and choose different classes like the *Gambler* or *Hacker* for unique bonuses.
   - **Achievements**: Track your feats and earn rewards.
-- **Persistent State**: Your chips, upgrades, and stats are saved automatically to your local browser storage.
+- **Multi-Dice System**: Access levels unlock more dice (1-4) for bigger visual spectacle.
+  - **Recruit**: 1 Die
+  - **Hacker**: 2 Dice
+  - **Elite**: 3 Dice
+  - **Admin**: 4 Dice
+- **Infinite Progression (Rebirth)**:
+  - Reach **ADMIN** level to break into the Mainframe Vault.
+  - Reset your chips to gain permanent distinct **Rebirth Tiers**.
+  - Each rebirth grants **+5% Permanent Win Chance** but increases difficulty for the next run.
+- **Persistent State**: Your chips, upgrades, stats, and rebirth level are saved automatically.
 - **Daily Bonuses & Mystery Boxes**: Come back daily for free chips and try your luck with mystery rewards.
 - **Mobile & Desktop Compatible**: Fully responsive design works on phones, tablets, and laptops.
 
