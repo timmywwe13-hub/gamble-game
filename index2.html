@@ -2784,6 +2784,67 @@
             box-shadow: 0 0 5px var(--red);
         }
 
+        /* Matrix Theme (Green) */
+        body.matrix-theme .binary-bg {
+            color: rgba(0, 255, 0, 0.2);
+        }
+
+        body.matrix-theme .screen {
+            border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+        }
+
+        body.matrix-theme .dice-face {
+            border-color: #00ff00;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        body.matrix-theme .pip {
+            background: #00ff00;
+            box-shadow: 0 0 5px #00ff00;
+        }
+
+        /* Synthwave Theme (Purple/Pink) */
+        body.synth-theme .binary-bg {
+            color: rgba(255, 0, 255, 0.15);
+            background: linear-gradient(to bottom, #2b002b, #000000);
+        }
+
+        body.synth-theme .screen {
+            border-color: #ff00ff;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
+        }
+
+        body.synth-theme .dice-face {
+            border-color: #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        body.synth-theme .pip {
+            background: #ff00ff;
+            box-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Gold Theme (High Roller) */
+        body.gold-theme .binary-bg {
+            color: rgba(255, 215, 0, 0.2);
+        }
+
+        body.gold-theme .screen {
+            border-color: #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        body.gold-theme .dice-face {
+            border-color: #ffd700;
+            box-shadow: 0 0 15px #ffd700;
+        }
+
+        body.gold-theme .pip {
+            background: #ffd700;
+            box-shadow: 0 0 10px #ffd700;
+        }
+
         .map-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -3511,16 +3572,6 @@
         // ========== UPDATE LOG DATA ==========
         const UPDATE_LOG = [
             {
-                version: '2.2',
-                date: '2026-01-30',
-                title: 'MAP SELECTION UPDATE',
-                changes: [
-                    'NEW MAPS: Added 5 distinct visual themes (Matrix, Synthwave, Gold, Red Alert).',
-                    'IMPROVED NAVIGATION: Seamless map switching via index2.html.',
-                    'UI TWEAKS: Enhanced visual feedback for selection.'
-                ]
-            },
-            {
                 version: '2.1',
                 date: '2026-01-30',
                 title: 'THE PROTON UPDATE',
@@ -3647,6 +3698,15 @@
         // ========== INITIALIZE ==========
         function init() {
             loadGame();
+
+            // Handle Map Parameter from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const mapParam = urlParams.get('map');
+            if (mapParam) {
+                console.log('Loading map from URL:', mapParam);
+                gameState.currentMap = mapParam;
+                saveGame();
+            }
             createBinaryBackground();
             renderDice(); // NEW: Dynamic dice rendering
             updateDisplay();
@@ -4239,17 +4299,16 @@
         }
 
         function selectMap(mapId) {
-            // Redirect to index2.html with the selected map
-            const currentUrl = new URL(window.location.href);
-            // Assuming index2.html is in the same directory
-            const newUrl = currentUrl.pathname.replace('index.html', 'index2.html') + '?map=' + mapId;
+            gameState.currentMap = mapId;
+            const map = MAPS.find(m => m.id === mapId);
+
+            // Apply theme
+            document.body.className = map.class || '';
 
             playSound('click');
-            showToast(`🗺️ Travelling to ${mapId.toUpperCase()}...`);
-
-            setTimeout(() => {
-                window.location.href = newUrl;
-            }, 500);
+            showToast(`🗺️ Travelling to ${map.name}...`);
+            saveGame();
+            renderMaps();
         }
 
         // ========== END OF RUN REWARDS ==========

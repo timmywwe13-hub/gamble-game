@@ -21,10 +21,12 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
   - **Juggernaut (Titan)**: Massive Heat Capacity.
   - **Zen (Monk)**: Double Streak Bonuses.
   - **Ghost (Cipher)**: 25% Chance to refund losses.
-- **Map System**: Select your operation zone for unique visuals and bonuses.
-  - **Neon City**: Standard Environment.
-  - **Cyber District**: +10% Chips on every win (Gold Theme).
-  - **The Void**: High Risk? (Red Theme).
+- **Map System**: Select from 5 unique operation zones with seamless switching.
+  - **Neon City (Blue)**: Standard cyberpunk environment.
+  - **Matrix Grid (Green)**: Enter the code flow.
+  - **Synthwave (Purple)**: Retro-futuristic vibes.
+  - **Golden Vault (Gold)**: High roller luxury zone.
+  - **Red Alert (Red)**: High security breach mode.
 - **New Classes**:
   - **Glitch (Free)**: 1% Chance for massive 10x Multiplier.
   - **Architect (Free)**: +10% Passive Chip gains.
