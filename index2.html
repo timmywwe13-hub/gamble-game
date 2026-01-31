@@ -4426,16 +4426,13 @@
         }
 
         function selectMap(mapId) {
-            gameState.currentMap = mapId;
-            const map = MAPS.find(m => m.id === mapId);
-
-            // Apply theme
-            document.body.className = map.class || '';
-
             playSound('click');
-            showToast(`🗺️ Travelling to ${map.name}...`);
-            saveGame();
-            renderMaps();
+            showToast(`🗺️ Travelling to ${mapId.toUpperCase()}...`);
+
+            setTimeout(() => {
+                // Reload with new map param (reloads page to apply theme via init)
+                window.location.href = `index2.html?map=${mapId}`;
+            }, 500);
         }
 
         // ========== END OF RUN REWARDS ==========

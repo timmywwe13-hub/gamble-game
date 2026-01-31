@@ -4250,16 +4250,12 @@
         }
 
         function selectMap(mapId) {
-            // Redirect to index2.html with the selected map
-            const currentUrl = new URL(window.location.href);
-            // Assuming index2.html is in the same directory
-            const newUrl = currentUrl.pathname.replace('index.html', 'index2.html') + '?map=' + mapId;
-
             playSound('click');
             showToast(`🗺️ Travelling to ${mapId.toUpperCase()}...`);
 
             setTimeout(() => {
-                window.location.href = newUrl;
+                // Robust navigation for GitHub/Local/Folder roots
+                window.location.href = `index2.html?map=${mapId}`;
             }, 500);
         }
 
