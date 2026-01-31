@@ -2815,6 +2815,84 @@
         .map-card.void {
             border-left: 5px solid var(--red);
         }
+
+        /* Rebirth Display - Enhanced */
+        .rebirth-display {
+            position: fixed;
+            top: 50px;
+            left: 20px;
+            z-index: 99;
+            pointer-events: none;
+        }
+
+        .rebirth-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+            transition: all 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .rebirth-badge:hover {
+            background: rgba(255, 215, 0, 0.1);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            transform: scale(1.05);
+        }
+
+        .rebirth-badge.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-20px);
+        }
+
+        .rebirth-icon {
+            font-size: 14px;
+            margin-right: 5px;
+        }
+
+        .rebirth-stars {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            max-width: 150px;
+            margin-top: 2px;
+        }
+
+        .rebirth-star {
+            font-size: 10px;
+            color: var(--gold);
+            text-shadow: 0 0 5px var(--gold);
+        }
+
+        .rebirth-star.empty {
+            color: var(--text-dim);
+            text-shadow: none;
+            opacity: 0.3;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 600px) {
+            .rebirth-display {
+                top: 60px;
+                left: 10px;
+            }
+
+            .rebirth-badge {
+                padding: 5px 8px;
+                transform: scale(0.9);
+                transform-origin: left top;
+            }
+
+            .rebirth-stars {
+                max-width: 100px;
+            }
+        }
     </style>
 </head>
 
@@ -3511,6 +3589,17 @@
         // ========== UPDATE LOG DATA ==========
         const UPDATE_LOG = [
             {
+                version: '2.5',
+                date: '2026-01-31',
+                title: 'ASCENSION UPDATE',
+                changes: [
+                    'REBIRTH EXPANDED: 18 Ranks (Bronze to Singularity)!',
+                    'NEW TIERS: Unlock Cosmic, Divine, Infinite, and more.',
+                    'SINGULARITY: Reach Level 18 for guaranteed wins (100% chance).',
+                    'MOBILE UI: Enhanced Rebirth display for small screens.'
+                ]
+            },
+            {
                 version: '2.4',
                 date: '2026-01-31',
                 title: 'REBIRTH & BETTING EXPANSION',
@@ -3815,6 +3904,26 @@
         }
 
         // ========== REBIRTH SYSTEM ==========
+        const REBIRTH_TIERS = [
+            { level: 1, name: 'BRONZE', reward: 'Permanently +5% Win Chance' },
+            { level: 2, name: 'SILVER', reward: 'Start runs with 2,000 Chips' },
+            { level: 3, name: 'GOLD', reward: 'Permanently +10% Win Chance' },
+            { level: 4, name: 'PLATINUM', reward: '-10% Heat Generation' },
+            { level: 5, name: 'DIAMOND', reward: 'Permanently +15% Win Chance & Visual Upgrade' },
+            { level: 6, name: 'MASTER', reward: 'Unlock TITAN Class for Free' },
+            { level: 7, name: 'GRANDMASTER', reward: 'Permanently +20% Win Chance' },
+            { level: 8, name: 'LEGEND', reward: 'All Shop Upgrades 50% Off' },
+            { level: 9, name: 'ETERNAL', reward: 'GOD MODE: Heat Immunity & Max Luck' },
+            { level: 10, name: 'COSMIC', reward: 'Permanently +50% Win Chance' },
+            { level: 11, name: 'ETHEREAL', reward: 'Start runs with 5,000 Chips' },
+            { level: 12, name: 'DIVINE', reward: 'Permanently +60% Win Chance' },
+            { level: 13, name: 'OMNIPOTENT', reward: 'Heat Capacity +50%' },
+            { level: 14, name: 'INFINITE', reward: 'Permanently +70% Win Chance' },
+            { level: 15, name: 'TIMELESS', reward: 'Mystery Box Cooldown Reduced (2h)' },
+            { level: 16, name: 'REALITY BENDER', reward: 'Permanently +80% Win Chance' },
+            { level: 17, name: 'UNIVERSAL', reward: 'Loaded Dice 50% Success Chance' },
+            { level: 18, name: 'SINGULARITY', reward: 'THE FINAL ASCENSION: 100% Win Chance' }
+        ];
 
         // Update rebirth display badge
         function updateRebirthDisplay() {
@@ -3826,15 +3935,27 @@
             if (gameState.rebirthLevel > 0) {
                 badge.classList.remove('hidden');
 
+                // Get current tier name (cap at max tier)
+                const tierIndex = Math.min(gameState.rebirthLevel, REBIRTH_TIERS.length) - 1;
+                const currentTier = REBIRTH_TIERS[tierIndex];
+
+                // Add tooltip title for hover info
+                badge.setAttribute('title', `Rank: ${currentTier.name} - ${currentTier.reward}`);
+
                 // Generate stars (filled for achieved, empty for remaining)
-                let starsHTML = '';
-                for (let i = 1; i <= 9; i++) {
+                let starsHTML = `<span class="rebirth-text" style="display:block; margin-bottom:2px">${currentTier.name}</span>`;
+
+                // Add stars container with flex wrap
+                starsHTML += `<div style="display:flex; flex-wrap:wrap; gap:1px; max-width:140px;">`;
+                for (let i = 1; i <= 18; i++) {
                     if (i <= gameState.rebirthLevel) {
                         starsHTML += '<span class="rebirth-star">★</span>';
                     } else {
                         starsHTML += '<span class="rebirth-star empty">☆</span>';
                     }
                 }
+                starsHTML += `</div>`;
+
                 starsContainer.innerHTML = starsHTML;
             } else {
                 badge.classList.add('hidden');
@@ -3850,7 +3971,7 @@
             const adminThreshold = levels[3].threshold;
 
             // Show vault break button at ADMIN level (and if not at max rebirth)
-            if (gameState.chips >= adminThreshold && gameState.rebirthLevel < 9) {
+            if (gameState.chips >= adminThreshold && gameState.rebirthLevel < 18) {
                 btn.classList.add('show');
             } else {
                 btn.classList.remove('show');
@@ -3859,8 +3980,8 @@
 
         // Break into vault and rebirth
         function breakIntoVault() {
-            if (gameState.rebirthLevel >= 9) {
-                showToast('🏆 Maximum rebirth level reached!');
+            if (gameState.rebirthLevel >= 18) {
+                showToast('🏆 Maximum Ascension reached! You are ONE with the DATA.');
                 return;
             }
 
@@ -3885,8 +4006,13 @@
                 // Increment rebirth level
                 gameState.rebirthLevel++;
 
-                // Reset chips and heat
-                gameState.chips = 1250;
+                // Apply Rebirth Rewards (Reset Logic)
+                // Level 2+: Silver/Ethereal Start Chips
+                let startChips = 1250;
+                if (gameState.rebirthLevel >= 11) startChips = 5000; // Ethereal
+                else if (gameState.rebirthLevel >= 2) startChips = 2000; // Silver
+
+                gameState.chips = startChips;
                 gameState.heatLevel = 20;
 
                 // NEW: Reset Upgrades for harder challenge
@@ -3899,16 +4025,24 @@
                     loadedDice: false
                 };
 
+                // Unlock Titans/Classes
+                if (gameState.rebirthLevel >= 6 && !gameState.unlockedClasses.includes('titan')) {
+                    gameState.unlockedClasses.push('titan');
+                }
+
                 // Reset run stats
                 gameState.runWins = 0;
                 gameState.runLosses = 0;
                 gameState.runChipsEarned = 0;
                 gameState.runMaxStreak = 0;
-                gameState.runStartChips = 1250;
+                gameState.runStartChips = startChips;
 
                 // Show toast with new level requirement
                 const newLevels = getAccessLevels();
-                showToast(`🔥 REBIRTH ${gameState.rebirthLevel}/9! Upscaling Difficulty... Next ADMIN: ${newLevels[3].threshold.toLocaleString()}`);
+                const currentTier = REBIRTH_TIERS[gameState.rebirthLevel - 1]; // Current one now
+
+                showToast(`🏆 REBIRTH COMPLETE! Rank: ${currentTier.name}! Reward: ${currentTier.reward}`);
+                setTimeout(() => showToast(`🔥 NEW CHALLENGE: Next ADMIN at ${newLevels[3].threshold.toLocaleString()} chips!`), 2000);
 
                 // Update everything
                 renderDice();
@@ -3924,6 +4058,17 @@
 
         // Get rebirth win bonus (5% per rebirth level)
         function getRebirthWinBonus() {
+            // Singularity
+            if (gameState.rebirthLevel >= 18) return 1.0;
+            // Reality Bender
+            if (gameState.rebirthLevel >= 16) return 0.80;
+            // Infinite
+            if (gameState.rebirthLevel >= 14) return 0.70;
+            // Divine
+            if (gameState.rebirthLevel >= 12) return 0.60;
+            // Cosmic
+            if (gameState.rebirthLevel >= 10) return 0.50;
+
             return gameState.rebirthLevel * 0.05;
         }
 
