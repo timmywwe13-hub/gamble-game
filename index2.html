@@ -3065,18 +3065,22 @@
         /* Mobile adjustments */
         @media (max-width: 600px) {
             .rebirth-display {
-                top: 60px;
-                left: 10px;
+                top: 70px;
+                right: 10px;
+                left: auto;
+                align-items: flex-end;
             }
 
             .rebirth-badge {
                 padding: 5px 8px;
                 transform: scale(0.9);
-                transform-origin: left top;
+                transform-origin: top right;
+                align-items: flex-end;
             }
 
             .rebirth-stars {
                 max-width: 100px;
+                justify-content: flex-end;
             }
         }
     </style>
