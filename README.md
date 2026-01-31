@@ -27,6 +27,15 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
   - **Synthwave (Purple)**: Retro-futuristic vibes.
   - **Golden Vault (Gold)**: High roller luxury zone.
   - **Red Alert (Red)**: High security breach mode.
+- **Map-Exclusive Items**:
+  - **Matrix Map**:
+    - **Red Pill**: Ignore one loss per run (Survival).
+    - **Code Breaker**: Passive chip generation over time.
+    - **Bullet Time**: Chance to auto-reroll a losing bet to a win.
+  - **Synthwave Map**:
+    - **Power Glove**: Double streak points for faster progression.
+    - **VHS Rewind**: One-time refund for a lost bet.
+    - **Neon Shades**: Flat +0.5x multiplier on all wins.
 - **New Classes**:
   - **Glitch (Free)**: 1% Chance for massive 10x Multiplier.
   - **Architect (Free)**: +10% Passive Chip gains.
