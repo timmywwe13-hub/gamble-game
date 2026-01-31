@@ -2828,8 +2828,9 @@
         /* Synthwave Theme (Retro Grid & Neon) */
         body.synth-theme {
             background: linear-gradient(to bottom, #2b002b 0%, #1a001a 100%);
-            overflow: hidden;
-            /* For grid */
+            overflow-x: hidden;
+            /* Prevent horizontal scroll from grid, but allow vertical! */
+            min-height: 100vh;
         }
 
         body.synth-theme::before {
@@ -2878,8 +2879,42 @@
 
         body.synth-theme .binary-bg {
             display: none;
-            /* Hide binary numbers for pure retro look */
         }
+
+        /* Update Log & Map Select Modal Fix */
+        .modal-screen {
+            background: rgba(10, 10, 16, 0.95);
+            border: 1px solid var(--text-dim);
+            padding: 20px;
+            border-radius: 10px;
+            width: 95%;
+            max-width: 500px;
+            max-height: 85vh;
+            /* crucial for mobile */
+            overflow-y: auto;
+            /* crucial for mobile */
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+        .map-card {
+            min-height: 80px;
+            /* Touch friendly */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Restore scrolling interactions */
+        .screen {
+            overflow-y: auto;
+            /* Fallback */
+        }
+
+
 
         body.synth-theme .screen {
             border: 2px solid #ff00ff;
