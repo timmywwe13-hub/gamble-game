@@ -3165,6 +3165,18 @@
                 <button class="bet-type-btn active" data-type="double">DOUBLE OR NOTHING</button>
                 <button class="bet-type-btn" data-type="highlow">HIGH / LOW</button>
                 <button class="bet-type-btn" data-type="triple">TRIPLE THREAT</button>
+                <button class="bet-type-btn active" data-type="double">DOUBLE OR NOTHING</button>
+                <button class="bet-type-btn" data-type="highlow">HIGH / LOW</button>
+                <button class="bet-type-btn" data-type="triple">TRIPLE THREAT</button>
+                <button class="bet-type-btn" data-type="parity">PARITY (E/O)</button>
+                <button class="bet-type-btn" data-type="prime">PRIME ROLL</button>
+                <button class="bet-type-btn" data-type="exact">EXACT NUMBER</button>
+            </div>
+
+            <!-- Sub Options for Specific Bets -->
+            <div class="bet-sub-options" id="betSubOptions"
+                style="display:none; margin-top:10px; gap:5px; flex-wrap:wrap; justify-content:center;">
+                <!-- Populated by JS -->
             </div>
 
             <div class="game-type-label">SELECT BET AMOUNT</div>
@@ -3697,6 +3709,17 @@
         // ========== UPDATE LOG DATA ==========
         const UPDATE_LOG = [
             {
+                version: '2.4',
+                date: '2026-01-31',
+                title: 'REBIRTH & BETTING EXPANSION',
+                changes: [
+                    'REBIRTH TIERS: 9 Ranks (Bronze to Eternal) with unique rewards.',
+                    'NEW BET MODES: Exact Number (6x), Parity (Even/Odd), Prime Roll.',
+                    'GOD MODE: Reach Level 9 to unlock heat immunity and max luck.',
+                    'PRESTIGE: Rebirth now resets upgrades for a true challenge.'
+                ]
+            },
+            {
                 version: '2.3',
                 date: '2026-01-30',
                 title: 'MATRIX & SYNTH UPDATE',
@@ -4015,6 +4038,17 @@
         }
 
         // ========== REBIRTH SYSTEM ==========
+        const REBIRTH_TIERS = [
+            { level: 1, name: 'BRONZE', reward: 'Permanently +5% Win Chance' },
+            { level: 2, name: 'SILVER', reward: 'Start runs with 2,000 Chips (was 1,250)' },
+            { level: 3, name: 'GOLD', reward: 'Permanently +10% Win Chance' },
+            { level: 4, name: 'PLATINUM', reward: '-10% Heat Generation' },
+            { level: 5, name: 'DIAMOND', reward: 'Permanently +15% Win Chance & Visual Upgrade' },
+            { level: 6, name: 'MASTER', reward: 'Unlock TITAN Class for Free' },
+            { level: 7, name: 'GRANDMASTER', reward: 'Permanently +20% Win Chance' },
+            { level: 8, name: 'LEGEND', reward: 'All Shop Upgrades 50% Off' },
+            { level: 9, name: 'ETERNAL', reward: 'GOD MODE: No Heat, Max Luck, +50% Win Chance' }
+        ];
 
         // Update rebirth display badge
         function updateRebirthDisplay() {
@@ -4026,8 +4060,12 @@
             if (gameState.rebirthLevel > 0) {
                 badge.classList.remove('hidden');
 
+                // Get current tier name
+                const currentTier = REBIRTH_TIERS[gameState.rebirthLevel - 1];
+                badge.setAttribute('title', `Rank: ${currentTier.name} - ${currentTier.reward}`);
+
                 // Generate stars (filled for achieved, empty for remaining)
-                let starsHTML = '';
+                let starsHTML = `<span style="margin-right:5px; font-size:10px">${currentTier.name}</span>`;
                 for (let i = 1; i <= 9; i++) {
                     if (i <= gameState.rebirthLevel) {
                         starsHTML += '<span class="rebirth-star">★</span>';
@@ -4085,18 +4123,33 @@
                 // Increment rebirth level
                 gameState.rebirthLevel++;
 
-                // Reset chips and heat
-                gameState.chips = 1250;
+                // Apply Rebirth Rewards
+                // Level 2: Silver - Start with more chips
+                gameState.chips = gameState.rebirthLevel >= 2 ? 2000 : 1250;
+
+                // Level 6: Master - Unlock Titan
+                if (gameState.rebirthLevel >= 6 && !gameState.unlockedClasses.includes('titan')) {
+                    gameState.unlockedClasses.push('titan');
+                    showToast('🗿 MASTER RANK REWARD: TITAN CLASS UNLOCKED!');
+                }
+
+                // Reset heat
                 gameState.heatLevel = 20;
 
-                // NEW: Reset Upgrades for harder challenge
+                // NEW: Reset Upgrades for harder challenge ("Prestige")
                 gameState.upgrades = {
                     safetyNet: false,
                     luckyCharm: false,
                     doubleDown: false,
                     vaultAnalyzer: false,
                     luckyPenny: false,
-                    loadedDice: false
+                    loadedDice: false,
+                    redPill: false,      // Matrix
+                    codeBreaker: false,  // Matrix
+                    bulletTime: false,   // Matrix
+                    powerGlove: false,   // Synth
+                    vhsRewind: false,    // Synth
+                    neonShades: false    // Synth
                 };
 
                 // Reset run stats
@@ -4104,11 +4157,14 @@
                 gameState.runLosses = 0;
                 gameState.runChipsEarned = 0;
                 gameState.runMaxStreak = 0;
-                gameState.runStartChips = 1250;
+                gameState.runStartChips = gameState.chips;
 
                 // Show toast with new level requirement
                 const newLevels = getAccessLevels();
-                showToast(`🔥 REBIRTH ${gameState.rebirthLevel}/9! Upscaling Difficulty... Next ADMIN: ${newLevels[3].threshold.toLocaleString()}`);
+                const nextTier = REBIRTH_TIERS[gameState.rebirthLevel - 1]; // Current one now
+
+                showToast(`🏆 REBIRTH COMPLETE! Rank: ${nextTier.name}! Reward: ${nextTier.reward}`);
+                setTimeout(() => showToast(`🔥 NEW CHALLENGE: Next ADMIN at ${newLevels[3].threshold.toLocaleString()} chips!`), 2000);
 
                 // Update everything
                 renderDice();
@@ -4122,8 +4178,16 @@
             }, 2000);
         }
 
-        // Get rebirth win bonus (5% per rebirth level)
         function getRebirthWinBonus() {
+            // Tier 9: Eternal (+50%)
+            if (gameState.rebirthLevel >= 9) return 0.50;
+            // Tier 7: Grandmaster (+20%)
+            if (gameState.rebirthLevel >= 7) return 0.20;
+            // Tier 5: Diamond (+15%)
+            if (gameState.rebirthLevel >= 5) return 0.15;
+            // Tier 3: Gold (+10%)
+            if (gameState.rebirthLevel >= 3) return 0.10;
+            // Tier 1: Bronze (+5%) - Base
             return gameState.rebirthLevel * 0.05;
         }
 
@@ -4839,8 +4903,13 @@
             const currentBet = gameState.currentBetAmount === 'all' ? gameState.chips : gameState.currentBetAmount;
             document.getElementById('currentBetDisplay').textContent = currentBet.toLocaleString();
 
-            const multiplier = gameState.currentBetType === 'triple' ? '3x' : '2x';
-            document.getElementById('multiplierDisplay').textContent = multiplier;
+            let multiplierCtx = '2x';
+            if (gameState.currentBetType === 'triple') multiplierCtx = '3x';
+            if (gameState.currentBetType === 'exact') multiplierCtx = '6x';
+            if (gameState.currentBetType === 'parity') multiplierCtx = '2x';
+            if (gameState.currentBetType === 'prime') multiplierCtx = '2x';
+
+            document.getElementById('multiplierDisplay').textContent = multiplierCtx;
         }
 
         // Screen Navigation
@@ -4961,50 +5030,57 @@
             // Standard Logic: Roll vs Bet Type
             switch (gameState.currentBetType) {
                 case 'double':
-                    // Standard: 50/50 win logic + bonuses
-                    // Logic: Roll 4-6 is WIN, 1-3 is LOSE (Simulated by 50% + bonus)
                     won = Math.random() < (0.5 + bonusChance);
-
-                    // Force the roll to match the result
-                    if (won) {
-                        // Ensure roll is 4, 5, or 6
-                        if (finalValue <= 3) finalValue = Math.floor(Math.random() * 3) + 4;
-                    } else {
-                        // Ensure roll is 1, 2, or 3
-                        if (finalValue >= 4) finalValue = Math.floor(Math.random() * 3) + 1;
-                    }
+                    if (won) finalValue = Math.floor(Math.random() * 3) + 4; // 4-6
+                    else finalValue = Math.floor(Math.random() * 3) + 1;     // 1-3
                     break;
 
                 case 'highlow':
-                    // High: 4-6 wins. Low: 1-3 wins? 
-                    // Wait, current UI logic implies High/Low is just a variant?
-                    // Let's assume High/Low means:
-                    // High (4-6) pays out? Or player CHOOSES High vs Low?
-                    // The UI currently just has "Double", "High/Low", "Triple".
-                    // Assuming "High/Low" button implies High Risk / Low Risk? 
-                    // Or choosing range... 
-                    // Existing logic was: won 50% time, result random.
-
-                    // Let's clean this up:
-                    // Treat 'double' as Standard Bet (Evens/Odds or High/Low implicit 50/50).
-                    // Treat 'highlow' as High Risk?
-                    // Let's make HighLow actually require High Roll (4,5,6).
-
-                    // Strict D6 Logic:
-                    won = finalValue >= 4;
-
-                    // Apply bonus chance modification
-                    if (!won && Math.random() < bonusChance) {
-                        won = true;
-                        finalValue = Math.floor(Math.random() * 3) + 4; // Force win
-                    }
+                    // Simple 50/50 like Double
+                    won = Math.random() < (0.5 + bonusChance);
+                    if (won) finalValue = Math.floor(Math.random() * 3) + 4; // 4-6
+                    else finalValue = Math.floor(Math.random() * 3) + 1;     // 1-3
                     break;
 
                 case 'triple':
-                    // Hard Mode: Needs 3 of a kind (Triple) or Triple Yield?
-                    // Legacy logic: 1/3 chance.
-                    won = Math.random() < (0.33 + bonusChance);
-                    if (won) finalValue = '★'; // Special symbol
+                    // Legacy logic: ~1/6 chance for special symbol
+                    won = Math.random() < (0.16 + bonusChance);
+                    finalValue = won ? '★' : (Math.random() > 0.5 ? '✗' : 1);
+                    break;
+
+                case 'exact':
+                    // Must match selected number (1-6)
+                    const target = gameState.selectedSubOption || 6;
+                    // Lower chance for higher payout (1/6)
+                    won = Math.random() < (0.16 + (bonusChance * 0.5));
+                    finalValue = won ? target : (Math.random() > 0.5 ? (target === 1 ? 2 : 1) : (target === 6 ? 5 : 6));
+                    // Safety check
+                    if (!won && finalValue === target) finalValue = target === 1 ? 2 : 1;
+                    break;
+
+                case 'parity':
+                    // Even / Odd
+                    const isEven = gameState.selectedSubOption === 'EVEN';
+                    won = Math.random() < (0.5 + bonusChance);
+                    if (won) {
+                        const arr = isEven ? [2, 4, 6] : [1, 3, 5];
+                        finalValue = arr[Math.floor(Math.random() * arr.length)];
+                    } else {
+                        const arr = isEven ? [1, 3, 5] : [2, 4, 6];
+                        finalValue = arr[Math.floor(Math.random() * arr.length)];
+                    }
+                    break;
+
+                case 'prime':
+                    // 2, 3, 5 are Prime
+                    won = Math.random() < (0.5 + bonusChance);
+                    if (won) {
+                        const primes = [2, 3, 5];
+                        finalValue = primes[Math.floor(Math.random() * primes.length)];
+                    } else {
+                        const nonPrimes = [1, 4, 6];
+                        finalValue = nonPrimes[Math.floor(Math.random() * nonPrimes.length)];
+                    }
                     break;
             }
 
@@ -5409,7 +5485,11 @@
             // Reverse the previous result
             if (won) {
                 // Was a win, now becomes a loss
-                const multiplier = gameState.currentBetType === 'triple' ? 3 : 2;
+                // Was a win, now becomes a loss
+                let multiplier = 2;
+                if (gameState.currentBetType === 'triple') multiplier = 3;
+                if (gameState.currentBetType === 'exact') multiplier = 6;
+
                 const winnings = betAmount * multiplier;
                 gameState.chips -= winnings;
                 gameState.chips -= betAmount;
@@ -5435,7 +5515,12 @@
             } else {
                 // Was a loss, now becomes a win!
                 gameState.chips += betAmount;
-                const multiplier = gameState.currentBetType === 'triple' ? 3 : 2;
+                // Was a loss, now becomes a win!
+                gameState.chips += betAmount;
+                let multiplier = 2;
+                if (gameState.currentBetType === 'triple') multiplier = 3;
+                if (gameState.currentBetType === 'exact') multiplier = 6;
+
                 const winnings = betAmount * multiplier;
                 gameState.chips += winnings - betAmount;
 
@@ -5598,6 +5683,45 @@
                     document.querySelectorAll('.bet-type-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     gameState.currentBetType = btn.dataset.type;
+
+                    // Handle Sub-options
+                    const subOptions = document.getElementById('betSubOptions');
+                    subOptions.style.display = 'none';
+                    subOptions.innerHTML = '';
+                    gameState.selectedSubOption = null; // Reset
+
+                    if (gameState.currentBetType === 'exact') {
+                        subOptions.style.display = 'flex';
+                        for (let i = 1; i <= 6; i++) {
+                            const b = document.createElement('button');
+                            b.className = 'bet-amount-btn'; // Reuse style
+                            b.textContent = i;
+                            b.onclick = () => {
+                                Array.from(subOptions.children).forEach(c => c.classList.remove('active'));
+                                b.classList.add('active');
+                                gameState.selectedSubOption = i;
+                            };
+                            subOptions.appendChild(b);
+                        }
+                        // Default to 6 (High risk!)
+                        subOptions.children[5].click();
+                    } else if (gameState.currentBetType === 'parity') {
+                        subOptions.style.display = 'flex';
+                        ['EVEN', 'ODD'].forEach(p => {
+                            const b = document.createElement('button');
+                            b.className = 'bet-amount-btn';
+                            b.textContent = p;
+                            b.onclick = () => {
+                                Array.from(subOptions.children).forEach(c => c.classList.remove('active'));
+                                b.classList.add('active');
+                                gameState.selectedSubOption = p;
+                            };
+                            subOptions.appendChild(b);
+                        });
+                        // Default Even
+                        subOptions.children[0].click();
+                    }
+
                     updateDisplay();
                 };
             });

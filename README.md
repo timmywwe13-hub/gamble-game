@@ -9,7 +9,12 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
 
 ## Features
 - **Cyberpunk Aesthetic**: Immersive neon visuals, binary rain, and 3D dice rolling animations.
-- **High-Stakes Gameplay**: Bet on High (4-6), Low (1-3), or Triple (Exact Matches).
+- **High-Stakes Gameplay**:
+  - **Standard**: Double (50/50), High/Low (50/50).
+  - **New Modes**: 
+    - **Exact Number**: Pick a specific number for **6x PAYOUT**.
+    - **Parity**: Bet on **Even** or **Odd**.
+    - **Prime Roll**: Bet on Prime numbers (2, 3, 5).
 - **Progression System**:
   - **Upgrades**: Purchase "Loaded Dice", "Safety Nets", "Lucky Charms", and more from the Upgrade Shop.
   - **Expanded Class System**: 8 New Buyable Classes!
@@ -46,9 +51,10 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
 - **Multi-Dice System**: Visuals scale with your Access Level (1-4 dice).
 - **Infinite Progression (Rebirth)**:
   - Reach **ADMIN** level to break into the Mainframe Vault.
-  - **Hard Mode Scaling**: Cost increases by 2.5x per rebirth.
-  - **Prestige**: Resets all Upgrades for a true challenge!
-  - Each rebirth grants **+5% Permanent Win Chance**.
+  - **9 Unique Tiers**: Climb from **Bronze** to **Eternal**.
+  - **Rewards**: Unlock starting chip bonuses, permanent win chance (+5% per tier), shop discounts, and free classes.
+  - **God Mode**: Reach Tier 9 (Eternal) for Heat Immunity and Max Luck.
+  - **Prestige**: Rebirth now resets upgrades for a true challenge!
 - **Update Log**: In-game "What's New" popup keeps you informed of changes.
 - **Mobile & Desktop Compatible**: Optimized UI for phones, tablets, and laptops.
 
@@ -57,8 +63,8 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
    - **Locally**: Open `index.html` in any modern web browser.
    - **On GitHub Pages**: Visit your GitHub Pages URL (e.g., `https://your-username.github.io/gamble-game/`).
 2. **Place Your Bet**:
-   - Select a bet type: **Low** (1-3), **High** (4-6), or **Triple** (Specific Numbers).
-   - Select an amount: 10, 50, 100, or **ALL IN**.
+   - Select a bet type: **Double**, **High/Low**, **Triple**, **Parity** (Even/Odd), **Prime**, or **Exact Number**.
+   - Select an amount: 100, 250, 500, or **ALL IN**.
 3. **Roll the Dice**: Hit the **PLAY** button to roll.
 4. **Special Abilities**:
    - **Overclock**: Pay chips to re-roll if you don't like the outcome.
