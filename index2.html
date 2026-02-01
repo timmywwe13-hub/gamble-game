@@ -2824,6 +2824,42 @@
                 transform: translateX(0) translateY(0);
             }
 
+            /* v3.2: Heat Visual Effects */
+            .heat-ice-effect {
+                box-shadow: inset 0 0 100px rgba(0, 255, 255, 0.15);
+                transition: box-shadow 1s ease;
+            }
+
+            .heat-inferno-effect {
+                box-shadow: inset 0 0 100px rgba(255, 60, 0, 0.15);
+                animation: infernoPulse 3s infinite;
+            }
+
+            @keyframes infernoPulse {
+                0% {
+                    box-shadow: inset 0 0 80px rgba(255, 60, 0, 0.15);
+                }
+
+                50% {
+                    box-shadow: inset 0 0 150px rgba(255, 60, 0, 0.3);
+                }
+
+                100% {
+                    box-shadow: inset 0 0 80px rgba(255, 60, 0, 0.15);
+                }
+            }
+
+            /* v3.2: Quick Bet Button */
+            .special-btn.quick-bet {
+                border-color: var(--yellow);
+                color: var(--yellow);
+            }
+
+            .special-btn.quick-bet.active {
+                background: rgba(255, 221, 0, 0.2);
+                box-shadow: 0 0 15px var(--yellow);
+            }
+
             .jackpot-mode-btn {
                 font-size: 12px;
                 padding: 10px 20px;
@@ -3815,36 +3851,54 @@
         <div class="modal-screen">
             <h2 class="modal-title">// HOW TO PLAY //</h2>
             <div class="modal-content">
-                <h3>⟨ OBJECTIVE ⟩</h3>
-                <p>You're a data gambler infiltrating a high-security vault. Win Energy Chips by betting on randomized
-                    outcomes to reach ADMIN access level and crack the vault.</p>
+                <h3>⟨ CORE OBJECTIVE ⟩</h3>
+                <p>Hack the vault by winning Energy Chips. Reach <strong>ADMIN</strong> level (100k chips) to attempt a
+                    Vault Break. Losing all chips terminates your connection (Game Over).</p>
 
-                <h3>⟨ BET TYPES ⟩</h3>
+                <h3>⟨ BETTING SYSTEMS ⟩</h3>
                 <ul>
-                    <li><strong>Coin Flip</strong> - 50% chance, 2x payout</li>
-                    <li><strong>High / Low</strong> - Guess if the number is high (5-9) or low (0-4), 2x payout</li>
-                    <li><strong>Triple Threat</strong> - Pick from 3 options, 3x payout (33% chance)</li>
+                    <li><strong>Coin Flip</strong> - 50/50 chance, 2x payout. Classic.</li>
+                    <li><strong>High / Low</strong> - Guess High (5-9) or Low (0-4). 2x payout.</li>
+                    <li><strong>Triple Threat</strong> - Pick 1 of 3, 33% chance, 3x payout.</li>
+                    <li><strong>Parity</strong> - Bet on Even or Odd numbers. 2x payout.</li>
+                    <li><strong>Prime Roll</strong> - Bet on Prime numbers (2, 3, 5). 2x payout.</li>
+                    <li><strong>Exact Number</strong> - Pick a specific number for massive <strong>6x PAYOUT</strong>.
+                    </li>
                 </ul>
 
-                <h3>⟨ STRATEGIC ABILITIES ⟩</h3>
+                <h3>⟨ ADVANCED MECHANICS ⟩</h3>
                 <ul>
-                    <li><strong style="color: #ff6600;">OVERCLOCK</strong> - Spend 50 chips to re-roll after a loss.
-                        This is where strategy kicks in!</li>
-                    <li><strong style="color: #9933ff;">LOADED DICE</strong> - Once per round, flip your result (loss →
-                        win, win → loss). Requires upgrade.</li>
+                    <li><strong style="color: #ff3366;">HEAT LEVEL</strong>: Winning increases Heat.
+                        <ul>
+                            <li><span style="color:#00ff88">ICE (0-19)</span>: +5% Win Chance</li>
+                            <li><span style="color:#ff3366">INFERNO (80+)</span>: -15% Win Chance but enables special
+                                achievements.</li>
+                            <li>Cool down by waiting or using Coolant Packs.</li>
+                        </ul>
+                    </li>
+                    <li><strong style="color: #00ffff;">CLASSES</strong>: Purchase classes with unique abilities like
+                        refunds, heat immunity, or better odds.</li>
+                    <li><strong style="color: #ffd700;">REBIRTH</strong>: Reset progress for permanent power.
+                        <ul>
+                            <li>Earn <strong>Chip Multipliers</strong> (up to 2.5x) and new ranks.</li>
+                            <li>Win Bonus capped at 25%.</li>
+                        </ul>
+                    </li>
+                    <li><strong style="color: #ff00ff;">SYSTEM OVERLOAD</strong>: Fill the ultimate meter to get 3
+                        GUARANTEED WINS.</li>
                 </ul>
 
                 <h3>⟨ PROGRESSION ⟩</h3>
                 <ul>
-                    <li><strong>RECRUIT</strong> → 0 chips (Starting level)</li>
-                    <li><strong>HACKER</strong> → 5,000 chips</li>
-                    <li><strong>ELITE</strong> → 25,000 chips</li>
-                    <li><strong>ADMIN</strong> → 100,000 chips (VAULT CRACKED!)</li>
+                    <li><strong>RECRUIT</strong> → Start (1 Die)</li>
+                    <li><strong>HACKER</strong> → 5k chips (2 Dice)</li>
+                    <li><strong>ELITE</strong> → 25k chips (3 Dice)</li>
+                    <li><strong>ADMIN</strong> → 100k chips (4 Dice + Vault Access)</li>
                 </ul>
 
-                <h3>⟨ WARNING ⟩</h3>
-                <p style="color: var(--red);">If you lose all your chips, connection will be terminated and you'll
-                    restart from the lobby with base chips.</p>
+                <h3>⟨ NEW FEATURES (v3.2) ⟩</h3>
+                <p>Check out <strong>Daily Challenges</strong> for bonus chips, try <strong>Quick Bet</strong> for
+                    faster runs, and hunt for the <strong>Progressive Jackpot</strong>!</p>
             </div>
             <button class="close-btn" id="closeHowToPlay">CLOSE TERMINAL</button>
         </div>
@@ -4130,6 +4184,18 @@
             diceCount: 1, // 1-4 dice based on access level
             // NEW: Unlocked Classes
             unlockedClasses: ['gambler'],
+            // NEW v3.2: Achievement Tracking
+            lossStreak: 0, // For comeback achievement
+            iceWinStreak: 0, // For ice cold achievement
+            // NEW v3.2: Gameplay Features
+            betHistory: [], // Last 10 bets
+            luckyNumbers: {}, // Track winning numbers
+            dailyChallenges: [], // Daily objectives
+            dailyChallengesLastReset: null,
+            jackpotPool: 0, // Progressive jackpot
+            quickBetMode: false, // Auto-repeat betting
+            critStreak: 0, // Consecutive critical hits
+            streakInsurance: false, // Protect streak (one-time use)
             upgrades: {
                 safetyNet: false,
                 luckyCharm: false,
@@ -4294,6 +4360,17 @@
         // ========== UPDATE LOG DATA ==========
         const UPDATE_LOG = [
             {
+                version: '3.2',
+                date: '2026-02-01',
+                title: 'CONTENT & BALANCE UPDATE',
+                changes: [
+                    'ACHIEVEMENTS: Added 10 new challenges including "Perfect Run" and "Heat Master"',
+                    'NEW FEATURES: Daily Challenges, Quick Bet Mode, Progressive Jackpot, and more!',
+                    'HEAT SYSTEM: Added Heat Decay, visual effects, and "Coolant Pack" item.',
+                    'TUTORIAL: Completely rewrote "How to Play" guide.'
+                ]
+            },
+            {
                 version: '2.5',
                 date: '2026-01-31',
                 title: 'ASCENSION UPDATE',
@@ -4388,6 +4465,18 @@
 
         // ========== ACHIEVEMENTS ==========
         const ACHIEVEMENTS = [
+            // NEW ACHIEVEMENTS (v3.2)
+            { id: 'perfectRun', name: 'PERFECT RUN', desc: 'Win 10 bets in a row', icon: '🏆', check: () => gameState.maxStreak >= 10 },
+            { id: 'heatMaster', name: 'HEAT MASTER', desc: 'Win while at INFERNO heat', icon: '🌋', check: () => gameState.achievements.wonAtInferno },
+            { id: 'iceCold', name: 'ICE COLD', desc: 'Stay at ICE heat for 5 wins', icon: '❄️', check: () => gameState.achievements.iceWinStreak >= 5 },
+            { id: 'allIn', name: 'HIGH ROLLER', desc: 'Win an ALL IN bet', icon: '🎰', check: () => gameState.achievements.allInWin },
+            { id: 'exactHit', name: 'SHARPSHOOTER', desc: 'Win an Exact Number bet', icon: '🎯', check: () => gameState.achievements.exactNumberWin },
+            { id: 'comeback', name: 'COMEBACK KID', desc: 'Win after losing 5+ in a row', icon: '💪', check: () => gameState.achievements.comebackWin },
+            { id: 'rebornOnce', name: 'REBORN', desc: 'Complete your first Rebirth', icon: '🔄', check: () => gameState.rebirthLevel >= 1 },
+            { id: 'multiDice', name: 'QUAD DAMAGE', desc: 'Roll with 4 dice (ADMIN)', icon: '🎲', check: () => gameState.diceCount >= 4 },
+            { id: 'classUnlock', name: 'CLASS ACT', desc: 'Unlock a premium class', icon: '🎭', check: () => gameState.unlockedClasses.length > 1 },
+            { id: 'chipMillion', name: 'MILLIONAIRE', desc: 'Reach 1,000,000 chips', icon: '💎', check: () => gameState.chips >= 1000000 },
+            // ORIGINAL ACHIEVEMENTS
             { id: 'firstWin', name: 'FIRST BLOOD', desc: 'Win your first bet', icon: '🎯', check: () => gameState.totalWins >= 1 },
             { id: 'streak5', name: 'HOT STREAK', desc: 'Get a 5 win streak', icon: '🔥', check: () => gameState.maxStreak >= 5 },
             { id: 'streak10', name: 'UNSTOPPABLE', desc: 'Get a 10 win streak', icon: '⚡', check: () => gameState.maxStreak >= 10 },
@@ -4416,13 +4505,18 @@
             // SYNTHWAVE ITEMS
             { id: 'powerGlove', name: 'POWER GLOVE', desc: 'Win Streaks count 2x (Synth Only)', cost: 6000, mapReq: 'synth' },
             { id: 'vhsRewind', name: 'VHS REWIND', desc: 'Refund 1st loss in a run (Synth Only)', cost: 10000, mapReq: 'synth' },
-            { id: 'neonShades', name: 'NEON SHADES', desc: '+0.5x Payout Multiplier (Synth Only)', cost: 15000, mapReq: 'synth' }
+            { id: 'neonShades', name: 'NEON SHADES', desc: '+0.5x Payout Multiplier (Synth Only)', cost: 15000, mapReq: 'synth' },
+            // NEW v3.2 ITEMS
+            { id: 'coolantPack', name: 'COOLANT PACK', desc: 'Reduce heat by 20 points (one-time use)', cost: 3000, consumable: true },
+            { id: 'streakShield', name: 'STREAK SHIELD', desc: 'Protect your streak from 1 loss', cost: 7500 },
+            { id: 'quickBetModule', name: 'QUICK BET MODULE', desc: 'Enable auto-repeat betting mode', cost: 5000 },
+            { id: 'jackpotTicket', name: 'JACKPOT TICKET', desc: 'Enter the progressive jackpot pool', cost: 2500, consumable: true }
         ];
 
         const OVERCLOCK_COST = 50;
         const COMBO_DECAY_TIME = 10000; // 10 seconds
         const CRITICAL_HIT_CHANCE = 0.05; // 5% chance for 5x payout
-        const CURRENT_VERSION = '2.1';
+        const CURRENT_VERSION = '3.2'; // UPDATED VERSION
 
         // Base access levels (before rebirth scaling)
         const BASE_ACCESS_LEVELS = [
@@ -4495,9 +4589,12 @@
             updateUltimateMeter();
             updateHeatDisplay();
             updateClassDisplay();
-            updateClassDisplay();
-            updateRebirthDisplay(); // NEW: Rebirth badge
+            updateRebirthDisplay(); // Rebirth badge
             createFloatingHearts();
+
+            // v3.2: Start new systems
+            startHeatDecay();
+            initDailyChallenges();
 
             // Code Breaker (Matrix Item) Passive
             setInterval(() => {
@@ -4970,6 +5067,90 @@
 
             text.textContent = currentHeat.name;
             text.className = 'heat-level-text ' + currentHeat.class;
+
+            // v3.2: Visual effects at extreme heat levels
+            const gameContainer = document.querySelector('.game-container');
+            if (gameContainer) {
+                gameContainer.classList.remove('heat-ice-effect', 'heat-inferno-effect');
+                if (gameState.heatLevel < 20) {
+                    gameContainer.classList.add('heat-ice-effect');
+                } else if (gameState.heatLevel >= 80) {
+                    gameContainer.classList.add('heat-inferno-effect');
+                }
+            }
+        }
+
+        // v3.2: Heat decay over time (every 30 seconds, reduce heat by 2 if above ICE)
+        function startHeatDecay() {
+            setInterval(() => {
+                if (gameState.heatLevel > 5 && gameState.isPlaying) {
+                    gameState.heatLevel = Math.max(5, gameState.heatLevel - 2);
+                    updateHeatDisplay();
+                    saveGame();
+                }
+            }, 30000);
+        }
+
+        // v3.2: Daily Challenges System
+        const DAILY_CHALLENGES = [
+            { id: 'wins5', name: 'Win Streak', desc: 'Win 5 bets in a row', target: 5, type: 'streak', reward: 500 },
+            { id: 'wins10', name: 'Winning Spree', desc: 'Win 10 bets total', target: 10, type: 'totalWins', reward: 750 },
+            { id: 'allIn', name: 'High Stakes', desc: 'Win an ALL IN bet', target: 1, type: 'allInWins', reward: 1000 },
+            { id: 'exact', name: 'Precision Strike', desc: 'Win an Exact Number bet', target: 1, type: 'exactWins', reward: 1500 },
+            { id: 'hot', name: 'Playing With Fire', desc: 'Win while at HOT or above', target: 3, type: 'hotWins', reward: 800 },
+            { id: 'triple', name: 'Triple Threat', desc: 'Win 3 Triple bets', target: 3, type: 'tripleWins', reward: 600 },
+            { id: 'noLoss', name: 'Flawless', desc: 'Win 3 in a row without any loss', target: 3, type: 'flawless', reward: 1200 },
+            { id: 'comeback', name: 'Never Give Up', desc: 'Win after being below 500 chips', target: 1, type: 'lowWin', reward: 900 }
+        ];
+
+        function initDailyChallenges() {
+            const today = new Date().toDateString();
+            if (gameState.dailyChallengesLastReset !== today) {
+                // Reset and pick 3 random challenges
+                const shuffled = [...DAILY_CHALLENGES].sort(() => Math.random() - 0.5);
+                gameState.dailyChallenges = shuffled.slice(0, 3).map(c => ({
+                    ...c,
+                    progress: 0,
+                    completed: false
+                }));
+                gameState.dailyChallengesLastReset = today;
+                saveGame();
+            }
+        }
+
+        function updateDailyChallengeProgress(type, value = 1) {
+            if (!gameState.dailyChallenges) return;
+            gameState.dailyChallenges.forEach(challenge => {
+                if (challenge.type === type && !challenge.completed) {
+                    challenge.progress += value;
+                    if (challenge.progress >= challenge.target) {
+                        challenge.completed = true;
+                        gameState.chips += challenge.reward;
+                        showToast(`🎯 CHALLENGE COMPLETE: ${challenge.name}! +${challenge.reward} chips!`);
+                        playSound('bonus');
+                    }
+                }
+            });
+            saveGame();
+        }
+
+        // v3.2: Quick Bet Mode
+        function toggleQuickBet() {
+            if (!gameState.upgrades.quickBetModule) {
+                showToast('⚠️ Purchase Quick Bet Module from shop first!');
+                return;
+            }
+            gameState.quickBetMode = !gameState.quickBetMode;
+            showToast(gameState.quickBetMode ? '⚡ Quick Bet: ON - Auto-repeat enabled!' : '⚡ Quick Bet: OFF');
+            updateQuickBetButton();
+            saveGame();
+        }
+
+        function updateQuickBetButton() {
+            const btn = document.getElementById('quickBetBtn');
+            if (btn) {
+                btn.classList.toggle('active', gameState.quickBetMode);
+            }
         }
 
         function adjustHeat(amount) {
@@ -5868,6 +6049,50 @@
                 onWinStreak();
                 applyComboBonus();
 
+                // v3.2: Achievement Tracking
+                // Heat Master: Win at INFERNO
+                if (gameState.heatLevel >= 80) {
+                    gameState.achievements.wonAtInferno = true;
+                }
+                // Ice Cold: Track wins at ICE
+                if (gameState.heatLevel < 20) {
+                    gameState.iceWinStreak = (gameState.iceWinStreak || 0) + 1;
+                } else {
+                    gameState.iceWinStreak = 0;
+                }
+                // All In Win
+                if (gameState.currentBetAmount === 'all' || betAmount >= gameState.chips + betAmount) {
+                    gameState.achievements.allInWin = true;
+                }
+                // Exact Number Win
+                if (gameState.currentBetType === 'exact') {
+                    gameState.achievements.exactNumberWin = true;
+                }
+                // Comeback Kid: Win after 5+ losses
+                if (gameState.lossStreak >= 5) {
+                    gameState.achievements.comebackWin = true;
+                }
+                gameState.lossStreak = 0; // Reset loss streak on win
+
+                // v3.2: Bet History
+                gameState.betHistory.push({ type: gameState.currentBetType, amount: betAmount, result: 'win', value: finalValue, time: Date.now() });
+                if (gameState.betHistory.length > 10) gameState.betHistory.shift();
+
+                // v3.2: Lucky Numbers
+                gameState.luckyNumbers[finalValue] = (gameState.luckyNumbers[finalValue] || 0) + 1;
+
+                // v3.2: Critical Streak
+                if (isCritical) {
+                    gameState.critStreak = (gameState.critStreak || 0) + 1;
+                    if (gameState.critStreak > 1) {
+                        const critBonus = Math.floor(winnings * 0.1 * gameState.critStreak);
+                        gameState.chips += critBonus;
+                        showToast(`🔥 CRIT STREAK x${gameState.critStreak}! +${formatNumber(critBonus)} BONUS!`);
+                    }
+                } else {
+                    gameState.critStreak = 0;
+                }
+
                 // Winning reduces heat (cooling off)
                 adjustHeat(-5);
 
@@ -5941,8 +6166,28 @@
                 // Track run stats
                 gameState.runLosses++;
 
-                // Reset streak
-                onLoseStreak();
+                // v3.2: Loss Streak Tracking
+                gameState.lossStreak = (gameState.lossStreak || 0) + 1;
+                gameState.iceWinStreak = 0; // Reset ice streak on loss
+                gameState.critStreak = 0; // Reset crit streak on loss
+
+                // v3.2: Bet History
+                gameState.betHistory.push({ type: gameState.currentBetType, amount: betAmount, result: 'loss', value: finalValue, time: Date.now() });
+                if (gameState.betHistory.length > 10) gameState.betHistory.shift();
+
+                // v3.2: Jackpot Pool - add portion of loss to pool
+                const jackpotContribution = Math.floor(actualLoss * 0.05);
+                gameState.jackpotPool = (gameState.jackpotPool || 0) + jackpotContribution;
+
+                // v3.2: Streak Shield - protect streak once
+                if (gameState.streakInsurance && gameState.winStreak > 0) {
+                    gameState.streakInsurance = false;
+                    showToast('🛡️ STREAK SHIELD ACTIVATED! Streak protected!');
+                    // Don't reset streak
+                } else {
+                    // Reset streak
+                    onLoseStreak();
+                }
 
                 // Losing increases heat (getting hot)
                 adjustHeat(10);
