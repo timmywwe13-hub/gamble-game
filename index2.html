@@ -3443,6 +3443,118 @@
                 transform: translate(var(--dx), var(--dy));
             }
         }
+
+        /* MISSING CSS INJECTION */
+        .vault-cutscene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .vault-cutscene.active {
+            display: flex;
+        }
+
+        .cutscene-hacker {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite alternate;
+        }
+
+        .cutscene-vault {
+            font-size: 60px;
+            margin-bottom: 40px;
+        }
+
+        @keyframes bounce {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-10px);
+            }
+        }
+
+        .end-run-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: var(--bg-panel);
+            border: 2px solid var(--gold);
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            z-index: 2000;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .end-run-modal.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
+        }
+
+        .end-run-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            color: var(--gold);
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--gold);
+        }
+
+        .end-run-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .end-run-stat-label {
+            color: var(--text-dim);
+            font-size: 12px;
+        }
+
+        .end-run-stat-value {
+            color: var(--cyan);
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .reward-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .end-run-rewards {
+            margin-bottom: 20px;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .end-run-rewards-title {
+            color: var(--green);
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 
