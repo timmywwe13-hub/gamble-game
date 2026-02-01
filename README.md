@@ -55,8 +55,8 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
   - Reach **ADMIN** level to break into the Mainframe Vault.
   - **18 Unique Tiers**: Climb from **Bronze** to **Singularity**.
   - **Ascension**: Beyond Eternal lies the Cosmic, Divine, and Singularity tiers.
-  - **Rewards**: Permanent win chance (up to **100%**), starting chip bonuses (up to 5,000), and reduced cooldowns.
-  - **Singularity**: Reach Tier 18 for **Guaranteed Wins** (100% Win Chance).
+  - **Rewards**: Permanent win chance (capped at **25%**), starting chip bonuses (up to 5,000), and **Chip Multipliers** (up to **2.5x**).
+  - **Singularity**: Reach Tier 18 for **2.5x Chip Multiplier** to maximize your profits!
   - **Prestige**: Rebirth now resets upgrades for a true challenge!
 - **Update Log**: In-game "What's New" popup keeps you informed of changes.
 - **Mobile & Desktop Compatible**: Optimized UI for phones, tablets, and laptops.

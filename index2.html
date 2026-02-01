@@ -3671,34 +3671,6 @@
         <button class="menu-btn cyan" id="claimRunRewardsBtn">CLAIM REWARDS</button>
     </div>
 
-    <!-- End of Run Modal -->
-    <div class="end-run-modal" id="endRunModal">
-        <div class="end-run-title">🎰 RUN COMPLETE 🎰</div>
-        <div class="end-run-stats">
-            <div class="end-run-stat">
-                <div class="end-run-stat-label">TOTAL WINS</div>
-                <div class="end-run-stat-value" id="endRunWins">0</div>
-            </div>
-            <div class="end-run-stat">
-                <div class="end-run-stat-label">TOTAL LOSSES</div>
-                <div class="end-run-stat-value" id="endRunLosses">0</div>
-            </div>
-            <div class="end-run-stat">
-                <div class="end-run-stat-label">MAX STREAK</div>
-                <div class="end-run-stat-value" id="endRunStreak">0</div>
-            </div>
-            <div class="end-run-stat">
-                <div class="end-run-stat-label">CHIPS EARNED</div>
-                <div class="end-run-stat-value" id="endRunChips">0</div>
-            </div>
-        </div>
-        <div class="end-run-rewards">
-            <div class="end-run-rewards-title">✨ RUN REWARDS ✨</div>
-            <div id="endRunRewardsList"></div>
-        </div>
-        <button class="menu-btn cyan" id="claimRunRewardsBtn">CLAIM REWARDS</button>
-    </div>
-
     <!-- Win Streak Display -->
     <div class="streak-display" id="streakDisplay">
         <div class="streak-label">WIN STREAK</div>
@@ -4662,25 +4634,26 @@
         }
 
         // ========== REBIRTH SYSTEM ==========
+        // REBIRTH_TIERS - Balanced rewards (win chance capped at 25%, chip multipliers for higher tiers)
         const REBIRTH_TIERS = [
-            { level: 1, name: 'BRONZE', reward: 'Permanently +5% Win Chance' },
-            { level: 2, name: 'SILVER', reward: 'Start runs with 2,000 Chips' },
-            { level: 3, name: 'GOLD', reward: 'Permanently +10% Win Chance' },
-            { level: 4, name: 'PLATINUM', reward: '-10% Heat Generation' },
-            { level: 5, name: 'DIAMOND', reward: 'Permanently +15% Win Chance & Visual Upgrade' },
-            { level: 6, name: 'MASTER', reward: 'Unlock TITAN Class for Free' },
-            { level: 7, name: 'GRANDMASTER', reward: 'Permanently +20% Win Chance' },
-            { level: 8, name: 'LEGEND', reward: 'All Shop Upgrades 50% Off' },
-            { level: 9, name: 'ETERNAL', reward: 'GOD MODE: Heat Immunity & Max Luck' },
-            { level: 10, name: 'COSMIC', reward: 'Permanently +50% Win Chance' },
-            { level: 11, name: 'ETHEREAL', reward: 'Start runs with 5,000 Chips' },
-            { level: 12, name: 'DIVINE', reward: 'Permanently +60% Win Chance' },
-            { level: 13, name: 'OMNIPOTENT', reward: 'Heat Capacity +50%' },
-            { level: 14, name: 'INFINITE', reward: 'Permanently +70% Win Chance' },
-            { level: 15, name: 'TIMELESS', reward: 'Mystery Box Cooldown Reduced (2h)' },
-            { level: 16, name: 'REALITY BENDER', reward: 'Permanently +80% Win Chance' },
-            { level: 17, name: 'UNIVERSAL', reward: 'Loaded Dice 50% Success Chance' },
-            { level: 18, name: 'SINGULARITY', reward: 'THE FINAL ASCENSION: 100% Win Chance' }
+            { level: 1, name: 'BRONZE', reward: '+5% Win Chance', winBonus: 0.05, chipMult: 1 },
+            { level: 2, name: 'SILVER', reward: 'Start with 2,000 Chips', winBonus: 0.05, chipMult: 1, startChips: 2000 },
+            { level: 3, name: 'GOLD', reward: '+10% Win Chance', winBonus: 0.10, chipMult: 1 },
+            { level: 4, name: 'PLATINUM', reward: '-10% Heat Generation', winBonus: 0.10, chipMult: 1, heatReduction: 0.1 },
+            { level: 5, name: 'DIAMOND', reward: '+15% Win Chance', winBonus: 0.15, chipMult: 1 },
+            { level: 6, name: 'MASTER', reward: 'Unlock TITAN Class Free', winBonus: 0.15, chipMult: 1 },
+            { level: 7, name: 'GRANDMASTER', reward: '+20% Win Chance', winBonus: 0.20, chipMult: 1 },
+            { level: 8, name: 'LEGEND', reward: '25% Shop Discount', winBonus: 0.20, chipMult: 1, shopDiscount: 0.25 },
+            { level: 9, name: 'ETERNAL', reward: '1.25x Chip Multiplier', winBonus: 0.20, chipMult: 1.25 },
+            { level: 10, name: 'COSMIC', reward: '+25% Win Chance (MAX)', winBonus: 0.25, chipMult: 1.25 },
+            { level: 11, name: 'ETHEREAL', reward: 'Start with 5,000 Chips', winBonus: 0.25, chipMult: 1.25, startChips: 5000 },
+            { level: 12, name: 'DIVINE', reward: '1.5x Chip Multiplier', winBonus: 0.25, chipMult: 1.5 },
+            { level: 13, name: 'OMNIPOTENT', reward: 'Heat Capacity +50%', winBonus: 0.25, chipMult: 1.5, heatCapacity: 0.5 },
+            { level: 14, name: 'INFINITE', reward: '1.75x Chip Multiplier', winBonus: 0.25, chipMult: 1.75 },
+            { level: 15, name: 'TIMELESS', reward: 'Mystery Box 2h Cooldown', winBonus: 0.25, chipMult: 1.75, mysteryBoxCooldown: 2 },
+            { level: 16, name: 'REALITY BENDER', reward: '2x Chip Multiplier', winBonus: 0.25, chipMult: 2 },
+            { level: 17, name: 'UNIVERSAL', reward: 'Loaded Dice 50% Success', winBonus: 0.25, chipMult: 2, loadedDiceBonus: 0.25 },
+            { level: 18, name: 'SINGULARITY', reward: '2.5x Chips + All Buffs', winBonus: 0.25, chipMult: 2.5 }
         ];
 
         // Update rebirth display badge
@@ -4844,19 +4817,30 @@
             }, 4500);
         }
 
+        // Get win bonus from rebirth level (CAPPED at 25% to prevent guaranteed wins)
         function getRebirthWinBonus() {
-            // Singularity
-            if (gameState.rebirthLevel >= 18) return 1.0;
-            // Reality Bender
-            if (gameState.rebirthLevel >= 16) return 0.80;
-            // Infinite
-            if (gameState.rebirthLevel >= 14) return 0.70;
-            // Divine
-            if (gameState.rebirthLevel >= 12) return 0.60;
-            // Cosmic
-            if (gameState.rebirthLevel >= 10) return 0.50;
+            if (gameState.rebirthLevel <= 0) return 0;
+            const tier = REBIRTH_TIERS[Math.min(gameState.rebirthLevel, REBIRTH_TIERS.length) - 1];
+            return tier.winBonus || 0; // Max is 0.25 (25%)
+        }
 
-            return gameState.rebirthLevel * 0.05;
+        // Get chip multiplier from rebirth level
+        function getRebirthChipMultiplier() {
+            if (gameState.rebirthLevel <= 0) return 1;
+            const tier = REBIRTH_TIERS[Math.min(gameState.rebirthLevel, REBIRTH_TIERS.length) - 1];
+            return tier.chipMult || 1;
+        }
+
+        // Get rebirth shop discount
+        function getRebirthShopDiscount() {
+            if (gameState.rebirthLevel >= 8) return 0.25; // 25% discount at Legend+
+            return 0;
+        }
+
+        // Get rebirth loaded dice bonus
+        function getRebirthLoadedDiceBonus() {
+            if (gameState.rebirthLevel >= 17) return 0.25; // 50% total at Universal+
+            return 0;
         }
 
         // ========== NEW FEATURE FUNCTIONS ==========
@@ -5057,11 +5041,14 @@
         function selectClass(cls) {
             console.log('Selecting class:', cls.id, 'Cost:', cls.cost, 'Current Class:', gameState.selectedClass);
 
-            // Fix: Explicitly check for 0 cost (free classes) or ownership
-            const isFree = cls.cost === 0 || cls.cost === undefined;
+            // Fix: Base classes have no cost property (undefined)
+            // Paid classes (cost > 0) require ownership via purchase
+            // Achievement classes (cost === 0) require unlock via gameState.unlockedClasses
+            const isBaseClass = cls.cost === undefined; // Gambler, Netrunner, etc.
             const isOwned = gameState.unlockedClasses.includes(cls.id);
+            const isFreeUnlockedClass = cls.cost === 0 && isOwned; // Sovereign, Glitch, Architect (need unlock)
 
-            if (isFree || isOwned) {
+            if (isBaseClass || isOwned || isFreeUnlockedClass) {
                 gameState.selectedClass = cls.id;
                 renderClasses();
                 updateClassDisplay();
@@ -5070,8 +5057,12 @@
                 console.log('Class selected successfully');
             } else {
                 // Try to buy - use custom modal instead of confirm() for iOS compatibility
-                if (gameState.chips >= cls.cost) {
+                if (cls.cost > 0 && gameState.chips >= cls.cost) {
                     showPurchaseConfirm(cls);
+                } else if (cls.cost === 0 && !isOwned) {
+                    // Achievement-locked class (like Sovereign)
+                    playSound('error');
+                    showToast('⚠️ This class is locked! Complete the achievement to unlock.');
                 } else {
                     playSound('error');
                     showToast('⚠️ Not enough chips to unlock!');
@@ -5845,6 +5836,12 @@
                 if (gameState.currentMap === 'cyber') {
                     const mapBonus = Math.floor(winnings * 0.1);
                     winnings += mapBonus;
+                }
+
+                // REBIRTH CHIP MULTIPLIER (1x to 2.5x based on rebirth tier)
+                const rebirthMult = getRebirthChipMultiplier();
+                if (rebirthMult > 1) {
+                    winnings = Math.floor(winnings * rebirthMult);
                 }
 
                 if (!isReroll) {
