@@ -9,7 +9,8 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
 
 ## Features
 - **Cyberpunk Aesthetic**: Immersive neon visuals, binary rain, 3D dice rolling, and **3D coin flip animations**.
-- **3D Coin Flip**: The Coin Flip bet type now features a realistic spinning coin with gold heads (👑) and silver tails (💀).
+- **3D Coin Flip**: The "Double or Nothing" mode now features a realistic 3D spinning coin animation (Gold Heads / Silver Tails) for true 50/50 immersion.
+- **Cinematic Vault Break**: Rebirths now trigger a dramatic hacker cutscene where you breach the mainframe security!
 - **High-Stakes Gameplay**:
   - **Standard**: Coin Flip (50/50), High/Low (50/50).
   - **New Modes**: 

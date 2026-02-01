@@ -3052,6 +3052,175 @@
             }
         }
 
+        /* ========== VAULT BREAK CUTSCENE ========== */
+        .vault-cutscene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            overflow: hidden;
+        }
+
+        .vault-cutscene.active {
+            display: flex;
+            animation: cutsceneFadeIn 0.5s ease;
+        }
+
+        @keyframes cutsceneFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .cutscene-hacker {
+            font-size: 120px;
+            margin-bottom: 30px;
+            animation: hackerBounce 0.5s ease infinite alternate;
+            filter: drop-shadow(0 0 30px var(--cyan));
+        }
+
+        @keyframes hackerBounce {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-15px);
+            }
+        }
+
+        .cutscene-vault {
+            width: 200px;
+            height: 200px;
+            border: 8px solid var(--gold);
+            border-radius: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0a0a15 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+            margin-bottom: 30px;
+        }
+
+        .cutscene-vault.breaking {
+            animation: vaultShake 0.1s linear infinite;
+        }
+
+        .cutscene-vault.broken {
+            animation: vaultExplode 1s ease forwards;
+            border-color: var(--green);
+            box-shadow: 0 0 100px rgba(0, 255, 136, 0.8);
+        }
+
+        @keyframes vaultShake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px) rotate(-2deg);
+            }
+
+            75% {
+                transform: translateX(5px) rotate(2deg);
+            }
+        }
+
+        @keyframes vaultExplode {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+                border-color: var(--green);
+            }
+        }
+
+        .cutscene-progress {
+            width: 300px;
+            max-width: 80%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--cyan);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .cutscene-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--cyan), var(--green));
+            transition: width 0.1s linear;
+            box-shadow: 0 0 20px var(--cyan);
+        }
+
+        .cutscene-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            color: var(--cyan);
+            text-shadow: 0 0 20px var(--cyan);
+            letter-spacing: 3px;
+            text-align: center;
+        }
+
+        .cutscene-text.success {
+            color: var(--green);
+            text-shadow: 0 0 30px var(--green);
+            animation: textPulse 0.5s ease infinite alternate;
+        }
+
+        @keyframes textPulse {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.05);
+            }
+        }
+
+        .cutscene-sparks {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .spark {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            animation: sparkFly 0.5s ease forwards;
+        }
+
+        @keyframes sparkFly {
+            to {
+                opacity: 0;
+                transform: translate(var(--dx), var(--dy));
+            }
+        }
+
         /* Custom Confirmation Modal (iOS compatible) */
         .confirm-modal {
             position: fixed;
@@ -3201,11 +3370,17 @@
                 <div class="end-run-stat-value" id="endRunChips">0</div>
             </div>
         </div>
-        <div class="end-run-rewards">
-            <div class="end-run-rewards-title">✨ RUN REWARDS ✨</div>
-            <div id="endRunRewardsList"></div>
-        </div>
         <button class="menu-btn cyan" id="claimRunRewardsBtn">CLAIM REWARDS</button>
+    </div>
+
+    <!-- Vault Break Cutscene -->
+    <div class="vault-cutscene" id="vaultCutscene">
+        <div class="cutscene-hacker" id="cutsceneHacker">🕵️</div>
+        <div class="cutscene-vault" id="cutsceneVault">🔐</div>
+        <div class="cutscene-progress">
+            <div class="cutscene-progress-fill" id="cutsceneProgressFill"></div>
+        </div>
+        <div class="cutscene-text" id="cutsceneText">INITIATING VAULT BREACH...</div>
     </div>
 
     <!-- Win Streak Display -->
@@ -3821,6 +3996,17 @@
         // ========== UPDATE LOG DATA ==========
         const UPDATE_LOG = [
             {
+                version: '3.0',
+                date: '2026-02-01',
+                title: 'VAULT HEIST UPDATE',
+                changes: [
+                    '3D COIN FLIP: Realistic gold/silver coin animation.',
+                    'CINEMATIC VAULT BREAK: New hacker cutscene for Rebirth.',
+                    'IOS FIX: Reset Progress now works on all devices.',
+                    'VISUALS: Improved parity across all game maps.'
+                ]
+            },
+            {
                 version: '2.5',
                 date: '2026-01-31',
                 title: 'ASCENSION UPDATE',
@@ -4223,31 +4409,81 @@
                 return;
             }
 
-            // Show vault break animation
-            const effect = document.getElementById('vaultBreakEffect');
-            effect.classList.add('active');
+            // Show cutscene
+            const cutscene = document.getElementById('vaultCutscene');
+            const vault = document.getElementById('cutsceneVault');
+            const progressFill = document.getElementById('cutsceneProgressFill');
+            const text = document.getElementById('cutsceneText');
+            const hacker = document.getElementById('cutsceneHacker');
 
-            playSound('jackpot');
-            spawnParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 60);
-            spawnParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6600', 40);
-            spawnParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff3366', 30);
+            // Reset cutscene elements
+            vault.classList.remove('breaking', 'broken');
+            vault.innerHTML = '🔐';
+            progressFill.style.width = '0%';
+            text.textContent = 'INITIATING VAULT BREACH...';
+            text.classList.remove('success');
 
+            // Show cutscene
+            cutscene.classList.add('active');
+            playSound('spin');
+
+            // Stage 1: Hacking in progress (0-2s)
             setTimeout(() => {
-                effect.classList.remove('active');
+                vault.classList.add('breaking');
+                text.textContent = 'BYPASSING SECURITY PROTOCOLS...';
+            }, 500);
+
+            // Animate progress bar
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 2;
+                progressFill.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                }
+            }, 80);
+
+            // Stage 2: Breaking through (2s)
+            setTimeout(() => {
+                text.textContent = 'CRACKING ENCRYPTION LAYER...';
+                hacker.textContent = '💻';
+            }, 1500);
+
+            // Stage 3: Almost there (3s)
+            setTimeout(() => {
+                text.textContent = 'BREACHING MAINFRAME...';
+                hacker.textContent = '⚡';
+            }, 2500);
+
+            // Stage 4: Success! (3.5s)
+            setTimeout(() => {
+                vault.classList.remove('breaking');
+                vault.classList.add('broken');
+                vault.innerHTML = '💎';
+                text.textContent = 'VAULT BREACHED! REBIRTH UNLOCKED!';
+                text.classList.add('success');
+                hacker.textContent = '🎉';
+                playSound('jackpot');
+                spawnParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 60);
+                spawnParticles(window.innerWidth / 2, window.innerHeight / 2, '#00ff88', 40);
+            }, 3500);
+
+            // Stage 5: Complete and apply rebirth (4.5s)
+            setTimeout(() => {
+                cutscene.classList.remove('active');
 
                 // Increment rebirth level
                 gameState.rebirthLevel++;
 
                 // Apply Rebirth Rewards (Reset Logic)
-                // Level 2+: Silver/Ethereal Start Chips
                 let startChips = 1250;
-                if (gameState.rebirthLevel >= 11) startChips = 5000; // Ethereal
-                else if (gameState.rebirthLevel >= 2) startChips = 2000; // Silver
+                if (gameState.rebirthLevel >= 11) startChips = 5000;
+                else if (gameState.rebirthLevel >= 2) startChips = 2000;
 
                 gameState.chips = startChips;
                 gameState.heatLevel = 20;
 
-                // NEW: Reset Upgrades for harder challenge
+                // Reset Upgrades for harder challenge
                 gameState.upgrades = {
                     safetyNet: false,
                     luckyCharm: false,
@@ -4271,21 +4507,21 @@
 
                 // Show toast with new level requirement
                 const newLevels = getAccessLevels();
-                const currentTier = REBIRTH_TIERS[gameState.rebirthLevel - 1]; // Current one now
+                const currentTier = REBIRTH_TIERS[gameState.rebirthLevel - 1];
 
                 showToast(`🏆 REBIRTH COMPLETE! Rank: ${currentTier.name}! Reward: ${currentTier.reward}`);
                 setTimeout(() => showToast(`🔥 NEW CHALLENGE: Next ADMIN at ${newLevels[3].threshold.toLocaleString()} chips!`), 2000);
 
                 // Update everything
                 renderDice();
-                renderUpgrades(); // Re-render upgrades as they are reset
+                renderUpgrades();
                 updateDisplay();
                 updateRebirthDisplay();
                 updateVaultBreakButton();
                 updateHeatDisplay();
                 checkAchievements();
                 saveGame();
-            }, 2000);
+            }, 4500);
         }
 
         // Get rebirth win bonus (5% per rebirth level)
@@ -5868,19 +6104,48 @@
                 saveGame();
             };
 
+            // Custom Confirmation Modal Logic
+            let confirmCallback = null;
+
+            function showCustomConfirm(title, message, onYes) {
+                document.getElementById('confirmTitle').textContent = title;
+                document.getElementById('confirmMessage').textContent = message;
+                document.getElementById('confirmModal').style.display = 'flex';
+                confirmCallback = onYes;
+            }
+
+            document.getElementById('confirmYes').onclick = () => {
+                if (confirmCallback) confirmCallback();
+                document.getElementById('confirmModal').style.display = 'none';
+                confirmCallback = null;
+            };
+
+            document.getElementById('confirmNo').onclick = () => {
+                document.getElementById('confirmModal').style.display = 'none';
+                confirmCallback = null;
+            };
+
             document.getElementById('resetProgress').onclick = () => {
-                if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
-                    localStorage.removeItem('neonDoubleDown');
-                    location.reload();
-                }
+                showCustomConfirm(
+                    'RESET PROGRESS?',
+                    'Are you sure you want to reset all progress? This cannot be undone.',
+                    () => {
+                        localStorage.removeItem('neonDoubleDown');
+                        location.reload();
+                    }
+                );
             };
 
             // Reset Progress Menu Button (main menu)
             document.getElementById('resetProgressMenuBtn').onclick = () => {
-                if (confirm('Are you sure you want to reset all progress? This will delete all your chips, upgrades, and achievements permanently.')) {
-                    localStorage.removeItem('neonDoubleDown');
-                    location.reload();
-                }
+                showCustomConfirm(
+                    'RESET PROGRESS?',
+                    'Are you sure you want to reset all progress? This will delete all your chips, upgrades, and achievements permanently.',
+                    () => {
+                        localStorage.removeItem('neonDoubleDown');
+                        location.reload();
+                    }
+                );
             };
 
             // Press any key to start
