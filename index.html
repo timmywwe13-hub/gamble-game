@@ -630,6 +630,160 @@
             box-shadow: 0 0 30px rgba(255, 51, 102, 0.5);
         }
 
+        /* ========== 3D COIN FLIP ========== */
+        .coin-container {
+            perspective: 600px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            min-height: 200px;
+        }
+
+        .coin-container.active {
+            display: flex;
+        }
+
+        .coin-wrapper {
+            perspective: 600px;
+            width: 150px;
+            height: 150px;
+            position: relative;
+        }
+
+        .coin {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateY(0deg);
+            transition: transform 0.1s ease;
+        }
+
+        .coin.flipping {
+            animation: coinFlip 2s ease-out;
+        }
+
+        .coin.flipping-heads {
+            animation: coinFlipHeads 2s ease-out forwards;
+        }
+
+        .coin.flipping-tails {
+            animation: coinFlipTails 2s ease-out forwards;
+        }
+
+        @keyframes coinFlipHeads {
+            0% {
+                transform: rotateY(0deg) rotateX(0deg);
+            }
+
+            25% {
+                transform: rotateY(720deg) rotateX(180deg);
+            }
+
+            50% {
+                transform: rotateY(1440deg) rotateX(360deg);
+            }
+
+            75% {
+                transform: rotateY(2160deg) rotateX(540deg);
+            }
+
+            100% {
+                transform: rotateY(2880deg) rotateX(720deg);
+            }
+        }
+
+        @keyframes coinFlipTails {
+            0% {
+                transform: rotateY(0deg) rotateX(0deg);
+            }
+
+            25% {
+                transform: rotateY(720deg) rotateX(180deg);
+            }
+
+            50% {
+                transform: rotateY(1440deg) rotateX(360deg);
+            }
+
+            75% {
+                transform: rotateY(2160deg) rotateX(540deg);
+            }
+
+            100% {
+                transform: rotateY(2880deg) rotateX(900deg);
+            }
+        }
+
+        .coin-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            backface-visibility: hidden;
+            border: 4px solid;
+        }
+
+        .coin-face.heads {
+            background: linear-gradient(135deg, #ffd700 0%, #ffaa00 50%, #ff8c00 100%);
+            border-color: #ffd700;
+            color: #1a0a00;
+            box-shadow:
+                0 0 30px rgba(255, 215, 0, 0.6),
+                inset 0 0 20px rgba(255, 255, 255, 0.3);
+            transform: rotateX(0deg);
+        }
+
+        .coin-face.tails {
+            background: linear-gradient(135deg, #c0c0c0 0%, #808080 50%, #606060 100%);
+            border-color: #c0c0c0;
+            color: #1a1a1a;
+            box-shadow:
+                0 0 30px rgba(192, 192, 192, 0.6),
+                inset 0 0 20px rgba(255, 255, 255, 0.3);
+            transform: rotateX(180deg);
+        }
+
+        .coin.win .coin-face {
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.8);
+        }
+
+        .coin.lose .coin-face {
+            box-shadow: 0 0 40px rgba(255, 51, 102, 0.8);
+        }
+
+        /* Coin edge for 3D effect */
+        .coin::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, #b8860b 0%, #daa520 50%, #b8860b 100%);
+            top: 50%;
+            transform: translateY(-50%) rotateX(90deg) translateZ(0);
+            border-radius: 4px;
+        }
+
+        /* Reset Progress Button Style */
+        .menu-btn.red {
+            color: var(--red);
+            border-color: var(--red);
+            box-shadow: 0 0 10px rgba(255, 51, 102, 0.3), inset 0 0 10px rgba(255, 51, 102, 0.1);
+        }
+
+        .menu-btn.red:hover {
+            background: rgba(255, 51, 102, 0.15);
+            box-shadow: 0 0 20px rgba(255, 51, 102, 0.5), inset 0 0 20px rgba(255, 51, 102, 0.2);
+            transform: scale(1.02);
+        }
+
         /* Hide old vault display */
         .vault-display {
             display: none;
@@ -2897,6 +3051,56 @@
                 justify-content: flex-end;
             }
         }
+
+        /* Custom Confirmation Modal (iOS compatible) */
+        .confirm-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .confirm-modal-content {
+            background: var(--bg-panel);
+            border: 2px solid var(--cyan);
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .confirm-modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            color: var(--cyan);
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px var(--cyan);
+        }
+
+        .confirm-modal-message {
+            font-size: 16px;
+            color: var(--text);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .confirm-modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .confirm-modal-buttons .menu-btn {
+            min-width: 100px;
+            padding: 12px 24px;
+        }
     </style>
 </head>
 
@@ -2919,6 +3123,19 @@
 
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
+
+    <!-- Custom Confirmation Modal (for iOS compatibility) -->
+    <div class="confirm-modal" id="confirmModal" style="display: none;">
+        <div class="confirm-modal-content">
+            <div class="confirm-modal-title" id="confirmTitle">Confirm Purchase</div>
+            <div class="confirm-modal-message" id="confirmMessage"></div>
+            <div class="confirm-modal-buttons">
+                <button class="menu-btn cyan" id="confirmYes">YES</button>
+                <button class="menu-btn magenta" id="confirmNo">NO</button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- System Overload Effect -->
     <div class="system-overload-effect" id="systemOverloadEffect"></div>
@@ -3034,6 +3251,7 @@
             <button class="menu-btn green" id="mapSelectBtn">🗺️ SELECT MAP</button>
             <button class="menu-btn pink" id="lovePageBtn">💕 SPECIAL MESSAGE</button>
             <button class="menu-btn magenta" id="updatesBtn">📝 UPDATES</button>
+            <button class="menu-btn red" id="resetProgressMenuBtn">🔄 RESET PROGRESS</button>
         </div>
 
         <!-- Mystery Box (appears when available) -->
@@ -3046,6 +3264,16 @@
     <!-- Game Screen -->
     <div class="screen" id="gameScreen">
         <div class="game-container">
+            <!-- 3D Coin Display for Coin Flip bet type -->
+            <div class="coin-container" id="coinContainer">
+                <div class="coin-wrapper">
+                    <div class="coin" id="coin">
+                        <div class="coin-face heads">👑</div>
+                        <div class="coin-face tails">💀</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- 3D Dice Display - Dynamically populated based on access level -->
             <div class="dice-container" id="diceContainer">
                 <!-- Dice will be dynamically generated by JavaScript -->
@@ -3058,7 +3286,7 @@
 
             <div class="game-type-label">SELECT BET TYPE</div>
             <div class="bet-types">
-                <button class="bet-type-btn active" data-type="double">DOUBLE OR NOTHING</button>
+                <button class="bet-type-btn active" data-type="double">🪙 COIN FLIP</button>
                 <button class="bet-type-btn" data-type="highlow">HIGH / LOW</button>
                 <button class="bet-type-btn" data-type="triple">TRIPLE THREAT</button>
             </div>
@@ -3120,7 +3348,7 @@
 
                 <h3>⟨ BET TYPES ⟩</h3>
                 <ul>
-                    <li><strong>Double or Nothing</strong> - 50% chance, 2x payout</li>
+                    <li><strong>Coin Flip</strong> - 50% chance, 2x payout</li>
                     <li><strong>High / Low</strong> - Guess if the number is high (5-9) or low (0-4), 2x payout</li>
                     <li><strong>Triple Threat</strong> - Pick from 3 options, 3x payout (33% chance)</li>
                 </ul>
@@ -4286,29 +4514,58 @@
                 saveGame();
                 console.log('Class selected successfully');
             } else {
-                // Try to buy
+                // Try to buy - use custom modal instead of confirm() for iOS compatibility
                 if (gameState.chips >= cls.cost) {
-                    if (confirm(`Unlock ${cls.name} class for ${cls.cost.toLocaleString()} chips?`)) {
-                        gameState.chips -= cls.cost;
-                        gameState.unlockedClasses.push(cls.id);
-                        gameState.selectedClass = cls.id;
-
-                        playSound('cash');
-                        spawnParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 50);
-                        showToast(`🔓 Unlocked ${cls.name} Class!`);
-
-                        updateDisplay();
-                        renderClasses();
-                        updateClassDisplay();
-                        saveGame();
-                        console.log('Class purchased and selected');
-                    }
+                    showPurchaseConfirm(cls);
                 } else {
                     playSound('error');
                     showToast('⚠️ Not enough chips to unlock!');
                 }
             }
         }
+
+        // Custom confirmation modal for iOS compatibility
+        function showPurchaseConfirm(cls) {
+            const modal = document.getElementById('confirmModal');
+            const message = document.getElementById('confirmMessage');
+            const yesBtn = document.getElementById('confirmYes');
+            const noBtn = document.getElementById('confirmNo');
+
+            message.textContent = `Unlock ${cls.name} class for ${cls.cost.toLocaleString()} chips?`;
+            modal.style.display = 'flex';
+
+            // Clean up old event listeners by cloning buttons
+            const newYesBtn = yesBtn.cloneNode(true);
+            const newNoBtn = noBtn.cloneNode(true);
+            yesBtn.parentNode.replaceChild(newYesBtn, yesBtn);
+            noBtn.parentNode.replaceChild(newNoBtn, noBtn);
+
+            newYesBtn.addEventListener('click', function () {
+                modal.style.display = 'none';
+                completePurchase(cls);
+            });
+
+            newNoBtn.addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+        }
+
+        function completePurchase(cls) {
+            gameState.chips -= cls.cost;
+            gameState.unlockedClasses.push(cls.id);
+            gameState.selectedClass = cls.id;
+
+            playSound('cash');
+            spawnParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 50);
+            showToast(`🔓 Unlocked ${cls.name} Class!`);
+
+            updateDisplay();
+            renderClasses();
+            updateClassDisplay();
+            saveGame();
+            console.log('Class purchased and selected');
+        }
+
 
         function updateClassDisplay() {
             const cls = CHARACTER_CLASSES.find(c => c.id === gameState.selectedClass);
@@ -5176,6 +5433,70 @@
             };
         }
 
+        // ========== COIN FLIP ANIMATION ==========
+        function flipCoin(won, callback) {
+            const coin = document.getElementById('coin');
+            const coinContainer = document.getElementById('coinContainer');
+            const diceContainer = document.getElementById('diceContainer');
+
+            if (!coin || !coinContainer) {
+                if (callback) callback();
+                return;
+            }
+
+            // Show coin, hide dice
+            coinContainer.classList.add('active');
+            diceContainer.style.display = 'none';
+
+            // Clear previous animations and states
+            coin.classList.remove('flipping', 'flipping-heads', 'flipping-tails', 'win', 'lose');
+            coin.style.transform = 'rotateY(0deg) rotateX(0deg)';
+
+            // Force reflow to restart animation
+            void coin.offsetWidth;
+
+            playSound('spin');
+
+            // Choose ending based on win (heads = win, tails = lose)
+            if (won) {
+                coin.classList.add('flipping-heads');
+            } else {
+                coin.classList.add('flipping-tails');
+            }
+
+            // Wait for animation to complete
+            setTimeout(() => {
+                coin.classList.remove('flipping-heads', 'flipping-tails');
+
+                // Set final state
+                if (won) {
+                    coin.classList.add('win');
+                    coin.style.transform = 'rotateY(2880deg) rotateX(720deg)';
+                } else {
+                    coin.classList.add('lose');
+                    coin.style.transform = 'rotateY(2880deg) rotateX(900deg)';
+                }
+
+                if (callback) callback();
+            }, 2000);
+        }
+
+        // Toggle coin/dice visibility based on bet type
+        function updateBetTypeDisplay() {
+            const coinContainer = document.getElementById('coinContainer');
+            const diceContainer = document.getElementById('diceContainer');
+
+            if (!coinContainer || !diceContainer) return;
+
+            if (gameState.currentBetType === 'double') {
+                coinContainer.classList.add('active');
+                diceContainer.style.display = 'none';
+            } else {
+                coinContainer.classList.remove('active');
+                diceContainer.style.display = 'flex';
+            }
+        }
+
         function rollDice(finalValue, callback) {
             // Apply to all dice scenes
             const diceScenes = document.querySelectorAll('.dice-scene');
@@ -5247,13 +5568,23 @@
             // Calculate result first
             const { won, finalValue } = calculateResult();
 
-            // Start rolling animation targeting the result
-            rollDice(finalValue, () => {
-                applyResult(won, finalValue, betAmount);
-                gameState.isPlaying = false;
-                playBtn.disabled = false;
-                updateSpecialButtons();
-            });
+            // Use coin flip animation for double bet type, dice for others
+            if (gameState.currentBetType === 'double') {
+                flipCoin(won, () => {
+                    applyResult(won, finalValue, betAmount);
+                    gameState.isPlaying = false;
+                    playBtn.disabled = false;
+                    updateSpecialButtons();
+                });
+            } else {
+                // Start rolling animation targeting the result
+                rollDice(finalValue, () => {
+                    applyResult(won, finalValue, betAmount);
+                    gameState.isPlaying = false;
+                    playBtn.disabled = false;
+                    updateSpecialButtons();
+                });
+            }
         }
 
         // Overclock: Pay chips to re-roll
@@ -5502,6 +5833,7 @@
                     document.querySelectorAll('.bet-type-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     gameState.currentBetType = btn.dataset.type;
+                    updateBetTypeDisplay(); // Toggle coin/dice visibility
                     updateDisplay();
                 };
             });
@@ -5538,6 +5870,14 @@
 
             document.getElementById('resetProgress').onclick = () => {
                 if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                    localStorage.removeItem('neonDoubleDown');
+                    location.reload();
+                }
+            };
+
+            // Reset Progress Menu Button (main menu)
+            document.getElementById('resetProgressMenuBtn').onclick = () => {
+                if (confirm('Are you sure you want to reset all progress? This will delete all your chips, upgrades, and achievements permanently.')) {
                     localStorage.removeItem('neonDoubleDown');
                     location.reload();
                 }

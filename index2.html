@@ -3083,6 +3083,56 @@
                 justify-content: flex-end;
             }
         }
+
+        /* Custom Confirmation Modal (iOS compatible) */
+        .confirm-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .confirm-modal-content {
+            background: var(--bg-panel);
+            border: 2px solid var(--cyan);
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .confirm-modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            color: var(--cyan);
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px var(--cyan);
+        }
+
+        .confirm-modal-message {
+            font-size: 16px;
+            color: var(--text);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .confirm-modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .confirm-modal-buttons .menu-btn {
+            min-width: 100px;
+            padding: 12px 24px;
+        }
     </style>
 </head>
 
@@ -3105,6 +3155,19 @@
 
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
+
+    <!-- Custom Confirmation Modal (for iOS compatibility) -->
+    <div class="confirm-modal" id="confirmModal" style="display: none;">
+        <div class="confirm-modal-content">
+            <div class="confirm-modal-title" id="confirmTitle">Confirm Purchase</div>
+            <div class="confirm-modal-message" id="confirmMessage"></div>
+            <div class="confirm-modal-buttons">
+                <button class="menu-btn cyan" id="confirmYes">YES</button>
+                <button class="menu-btn magenta" id="confirmNo">NO</button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- System Overload Effect -->
     <div class="system-overload-effect" id="systemOverloadEffect"></div>
@@ -3244,16 +3307,14 @@
 
             <div class="game-type-label">SELECT BET TYPE</div>
             <div class="bet-types">
-                <button class="bet-type-btn active" data-type="double">DOUBLE OR NOTHING</button>
-                <button class="bet-type-btn" data-type="highlow">HIGH / LOW</button>
-                <button class="bet-type-btn" data-type="triple">TRIPLE THREAT</button>
-                <button class="bet-type-btn active" data-type="double">DOUBLE OR NOTHING</button>
+                <button class="bet-type-btn active" data-type="double">🪙 COIN FLIP</button>
                 <button class="bet-type-btn" data-type="highlow">HIGH / LOW</button>
                 <button class="bet-type-btn" data-type="triple">TRIPLE THREAT</button>
                 <button class="bet-type-btn" data-type="parity">PARITY (E/O)</button>
                 <button class="bet-type-btn" data-type="prime">PRIME ROLL</button>
                 <button class="bet-type-btn" data-type="exact">EXACT NUMBER</button>
             </div>
+
 
             <!-- Sub Options for Specific Bets -->
             <div class="bet-sub-options" id="betSubOptions"
@@ -3318,7 +3379,7 @@
 
                 <h3>⟨ BET TYPES ⟩</h3>
                 <ul>
-                    <li><strong>Double or Nothing</strong> - 50% chance, 2x payout</li>
+                    <li><strong>Coin Flip</strong> - 50% chance, 2x payout</li>
                     <li><strong>High / Low</strong> - Guess if the number is high (5-9) or low (0-4), 2x payout</li>
                     <li><strong>Triple Threat</strong> - Pick from 3 options, 3x payout (33% chance)</li>
                 </ul>
@@ -4514,29 +4575,58 @@
                 saveGame();
                 console.log('Class selected successfully');
             } else {
-                // Try to buy
+                // Try to buy - use custom modal instead of confirm() for iOS compatibility
                 if (gameState.chips >= cls.cost) {
-                    if (confirm(`Unlock ${cls.name} class for ${cls.cost.toLocaleString()} chips?`)) {
-                        gameState.chips -= cls.cost;
-                        gameState.unlockedClasses.push(cls.id);
-                        gameState.selectedClass = cls.id;
-
-                        playSound('cash');
-                        spawnParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 50);
-                        showToast(`🔓 Unlocked ${cls.name} Class!`);
-
-                        updateDisplay();
-                        renderClasses();
-                        updateClassDisplay();
-                        saveGame();
-                        console.log('Class purchased and selected');
-                    }
+                    showPurchaseConfirm(cls);
                 } else {
                     playSound('error');
                     showToast('⚠️ Not enough chips to unlock!');
                 }
             }
         }
+
+        // Custom confirmation modal for iOS compatibility
+        function showPurchaseConfirm(cls) {
+            const modal = document.getElementById('confirmModal');
+            const message = document.getElementById('confirmMessage');
+            const yesBtn = document.getElementById('confirmYes');
+            const noBtn = document.getElementById('confirmNo');
+
+            message.textContent = `Unlock ${cls.name} class for ${cls.cost.toLocaleString()} chips?`;
+            modal.style.display = 'flex';
+
+            // Clean up old event listeners by cloning buttons
+            const newYesBtn = yesBtn.cloneNode(true);
+            const newNoBtn = noBtn.cloneNode(true);
+            yesBtn.parentNode.replaceChild(newYesBtn, yesBtn);
+            noBtn.parentNode.replaceChild(newNoBtn, noBtn);
+
+            newYesBtn.addEventListener('click', function () {
+                modal.style.display = 'none';
+                completePurchase(cls);
+            });
+
+            newNoBtn.addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+        }
+
+        function completePurchase(cls) {
+            gameState.chips -= cls.cost;
+            gameState.unlockedClasses.push(cls.id);
+            gameState.selectedClass = cls.id;
+
+            playSound('cash');
+            spawnParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 50);
+            showToast(`🔓 Unlocked ${cls.name} Class!`);
+
+            updateDisplay();
+            renderClasses();
+            updateClassDisplay();
+            saveGame();
+            console.log('Class purchased and selected');
+        }
+
 
         function updateClassDisplay() {
             const cls = CHARACTER_CLASSES.find(c => c.id === gameState.selectedClass);

@@ -8,9 +8,10 @@ Start your run, hacker. The house always wins... unless you rewrite the rules.
 Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play as an infiltration unit hacking into a corporate vault using "chips" as your processing power. Manage your resources, upgrade your systems (luck), and use special abilities to beat the odds.
 
 ## Features
-- **Cyberpunk Aesthetic**: Immersive neon visuals, binary rain, and 3D dice rolling animations.
+- **Cyberpunk Aesthetic**: Immersive neon visuals, binary rain, 3D dice rolling, and **3D coin flip animations**.
+- **3D Coin Flip**: The Coin Flip bet type now features a realistic spinning coin with gold heads (👑) and silver tails (💀).
 - **High-Stakes Gameplay**:
-  - **Standard**: Double (50/50), High/Low (50/50).
+  - **Standard**: Coin Flip (50/50), High/Low (50/50).
   - **New Modes**: 
     - **Exact Number**: Pick a specific number for **6x PAYOUT**.
     - **Parity**: Bet on **Even** or **Odd**.
@@ -58,13 +59,15 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
   - **Prestige**: Rebirth now resets upgrades for a true challenge!
 - **Update Log**: In-game "What's New" popup keeps you informed of changes.
 - **Mobile & Desktop Compatible**: Optimized UI for phones, tablets, and laptops.
+- **iOS Class Purchase Fix**: Custom touch-friendly modals ensure class purchases work on all devices including iPhone.
+- **Quick Reset**: Reset your progress directly from the main menu with the **🔄 RESET PROGRESS** button.
 
 ## How to Play
 1. **Launch the Game**:
    - **Locally**: Open `index.html` in any modern web browser.
    - **On GitHub Pages**: Visit your GitHub Pages URL (e.g., `https://your-username.github.io/gamble-game/`).
 2. **Place Your Bet**:
-   - Select a bet type: **Double**, **High/Low**, **Triple**, **Parity** (Even/Odd), **Prime**, or **Exact Number**.
+   - Select a bet type: **Coin Flip**, **High/Low**, **Triple**, **Parity** (Even/Odd), **Prime**, or **Exact Number**.
    - Select an amount: 100, 250, 500, or **ALL IN**.
 3. **Roll the Dice**: Hit the **PLAY** button to roll.
 4. **Special Abilities**:
