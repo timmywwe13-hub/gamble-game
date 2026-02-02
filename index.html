@@ -3419,6 +3419,8 @@
 
         <div class="menu-buttons">
             <button class="menu-btn cyan" id="startRunBtn">START RUN</button>
+            <button class="menu-btn" style="border: 2px solid #9933ff; color: #9933ff; box-shadow: 0 0 10px #9933ff;"
+                onclick="window.location.href='index2.html?mode=highStakes'">HIGH STAKES SECTOR</button>
             <button class="menu-btn yellow" id="howToPlayBtn">HOW TO PLAY</button>
             <button class="menu-btn magenta" id="upgradeShopBtn">UPGRADE SHOP</button>
             <button class="menu-btn gold" id="achievementsBtn">🏆 ACHIEVEMENTS</button>
@@ -3945,6 +3947,7 @@
                 name: 'ZEN',
                 icon: '🧘',
                 cost: 50000,
+                rebirthUnlock: 5, // NEW: Rebirth 5 Req
                 ability: 'Streak bonuses are Doubled',
                 effect: { streakBonusMult: 2 }
             },
@@ -3953,6 +3956,7 @@
                 name: 'GHOST',
                 icon: '👻',
                 cost: 75000,
+                rebirthUnlock: 8, // NEW: Rebirth 8 Req
                 ability: '25% Chance to fully refund a loss',
                 effect: { refundChance: 0.25 }
             },
@@ -3978,7 +3982,8 @@
                 id: 'sovereign',
                 name: 'SOVEREIGN',
                 icon: '👑',
-                cost: 0,
+                cost: 250000, // NEW: High Cost
+                rebirthUnlock: 9, // NEW: Rebirth 9 Req
                 ability: 'THE HOUSE EDGE: 2x Winnings, No Heat, 50% Refund on Loss',
                 effect: { winMultiplier: 2, heatImmunity: true, refundChance: 0.5 }
             }
@@ -4720,7 +4725,10 @@
             grid.innerHTML = '';
 
             CHARACTER_CLASSES.forEach(cls => {
-                const isUnlocked = !cls.cost || gameState.unlockedClasses.includes(cls.id);
+                const isRebirthLocked = cls.rebirthUnlock && gameState.rebirthLevel < cls.rebirthUnlock;
+
+                // Unlocked if: Not RebirthLocked AND (No Cost OR Already Purchased)
+                const isUnlocked = !isRebirthLocked && (!cls.cost || gameState.unlockedClasses.includes(cls.id));
                 const isSelected = gameState.selectedClass === cls.id;
                 const canAfford = gameState.chips >= (cls.cost || 0);
 
@@ -4728,7 +4736,10 @@
                 card.className = 'class-card' + (isSelected ? ' selected' : '') + (!isUnlocked ? ' locked' : '');
 
                 let costHtml = '';
-                if (!isUnlocked) {
+                if (isRebirthLocked) {
+                    costHtml = `<div class="class-cost" style="color:#ff0055">REQ: REBIRTH ${cls.rebirthUnlock}</div>`;
+                    card.classList.add('disabled');
+                } else if (!isUnlocked) {
                     costHtml = `<div class="class-cost">${formatNumber(cls.cost)} <span style="font-size:12px">CHIPS</span></div>`;
                     if (!canAfford) card.classList.add('disabled');
                 } else if (isSelected) {
@@ -4748,6 +4759,13 @@
 
         function selectClass(cls) {
             console.log('Selecting class:', cls.id, 'Cost:', cls.cost, 'Current Class:', gameState.selectedClass);
+
+            // Check Rebirth Lock
+            if (cls.rebirthUnlock && gameState.rebirthLevel < cls.rebirthUnlock) {
+                playSound('error');
+                showToast(`🔒 LOCKED: Requires Rebirth Level ${cls.rebirthUnlock}!`);
+                return;
+            }
 
             // Fix: Explicitly check for 0 cost (free classes) or ownership
             const isFree = cls.cost === 0 || cls.cost === undefined;
@@ -5979,8 +5997,8 @@
             // Menu buttons
             document.getElementById('startRunBtn').onclick = () => {
                 playSound('click');
-                startNewRun();
-                showScreen('game');
+                // Redirect to the newer version as per user request to link them
+                window.location.href = 'index2.html';
             };
             document.getElementById('howToPlayBtn').onclick = () => { playSound('click'); showScreen('howToPlay'); };
             document.getElementById('upgradeShopBtn').onclick = () => {

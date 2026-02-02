@@ -17,6 +17,7 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
     - **Exact Number**: Pick a specific number for **6x PAYOUT**.
     - **Parity**: Bet on **Even** or **Odd**.
     - **Prime Roll**: Bet on Prime numbers (2, 3, 5).
+    - **The Void (High Stakes)**: Unlock at Rebirth 4. Flip for **3x Win** or **1.5x Loss**.
 - **Progression System**:
   - **Upgrades**: Purchase "Loaded Dice", "Safety Nets", "Lucky Charms", and more from the Upgrade Shop.
   - **Expanded Class System**: 8 New Buyable Classes!
@@ -26,8 +27,9 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
   - **Leech (Vampire)**: Recover chips on loss.
   - **Pre-Cog (Timekeeper)**: Cheaper Overclocks.
   - **Juggernaut (Titan)**: Massive Heat Capacity.
-  - **Zen (Monk)**: Double Streak Bonuses.
-  - **Ghost (Cipher)**: 25% Chance to refund losses.
+  - **Zen (Monk)**: Double Streak Bonuses. **(Unlocks at Rebirth 5)**
+  - **Ghost (Cipher)**: 25% Chance to refund losses. **(Unlocks at Rebirth 8)**
+  - **Sovereign**: Reach **Rebirth 9** to unlock "The House Edge" (2x Wins, Heat Immunity, 50% Refund).
 - **Map System**: Select from 5 unique operation zones with seamless switching.
   - **Neon City (Blue)**: Standard cyberpunk environment.
   - **Matrix Grid (Green)**: Enter the code flow.
@@ -46,7 +48,6 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
 - **New Classes**:
   - **Glitch (Free)**: 1% Chance for massive 10x Multiplier.
   - **Architect (Free)**: +10% Passive Chip gains.
-  - **Sovereign (Unlockable)**: Reach **100 Win Streak** to unlock "The House Edge" (2x Wins, Heat Immunity, 50% Refund).
 - **Real D6 RNG**: Authentic 1-6 dice logic for fair and predictable rolling.
 - **Smart Formatting**: Chips display as "1.2k", "56m", "1.5b" for readability.
 - **System Overload (Ultimate)**: Charge your meter by playing. Activate to guarantee 3 wins in a row!
