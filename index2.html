@@ -551,6 +551,68 @@
             align-content: space-between;
         }
 
+        /* ========== DICE SKINS ========== */
+        /* GOLD SKIN */
+        .dice-face.skin-gold {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.4), rgba(255, 170, 0, 0.2));
+            box-shadow: inset 0 0 30px rgba(255, 215, 0, 0.5);
+            border: 2px solid #ffd700;
+        }
+
+        .dice-face.skin-gold .pip {
+            background: #ffd700;
+            box-shadow: 0 0 10px #ffd700;
+        }
+
+        /* VOID SKIN */
+        .dice-face.skin-void {
+            background: linear-gradient(135deg, rgba(20, 0, 10, 0.9), rgba(60, 0, 20, 0.8));
+            box-shadow: inset 0 0 30px rgba(255, 0, 80, 0.4);
+            border: 2px solid #ff0055;
+        }
+
+        .dice-face.skin-void .pip {
+            background: #ff0055;
+            box-shadow: 0 0 10px #ff0055;
+        }
+
+        /* MATRIX SKIN */
+        .dice-face.skin-matrix {
+            background: rgba(0, 20, 0, 0.8);
+            box-shadow: inset 0 0 20px rgba(0, 255, 0, 0.3);
+            border: 2px solid #00ff00;
+        }
+
+        .dice-face.skin-matrix::before {
+            content: '10101';
+            font-family: monospace;
+            opacity: 0.3;
+            color: #00ff00;
+            position: absolute;
+            font-size: 10px;
+            overflow: hidden;
+        }
+
+        .dice-face.skin-matrix .pip {
+            background: #00ff00;
+            box-shadow: 0 0 8px #00ff00;
+            border-radius: 0;
+            /* Square pips */
+        }
+
+        /* RETRO SKIN */
+        .dice-face.skin-retro {
+            background: linear-gradient(180deg, rgba(43, 0, 43, 0.8), rgba(26, 0, 26, 0.8));
+            border: 2px solid #ff00ff;
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .dice-face.skin-retro .pip {
+            background: #00ffff;
+            box-shadow: 0 0 8px #ff00ff;
+            border-radius: 2px;
+        }
+
         .dice-face[data-value="3"] .pip:nth-child(1) {
             align-self: flex-start;
         }
@@ -1982,6 +2044,24 @@
             color: var(--text-dim);
         }
 
+        /* Rebirth-locked class blur effect */
+        .class-card.rebirth-locked-blur {
+            filter: blur(2px);
+            opacity: 0.6;
+            background: rgba(153, 51, 255, 0.1);
+            border-color: var(--purple);
+        }
+
+        .class-card.rebirth-locked-blur:hover {
+            filter: blur(1px);
+            opacity: 0.75;
+        }
+
+        .class-card.rebirth-locked-blur .class-card-name {
+            color: var(--purple);
+            font-style: italic;
+        }
+
         /* ========== END OF RUN REWARDS ========== */
         .end-run-modal {
             position: fixed;
@@ -3147,6 +3227,171 @@
             box-shadow: 0 0 10px #ffd700;
         }
 
+        /* ========== ENHANCED MAP THEME EFFECTS ========== */
+
+        /* NEON CITY - Cyberpunk Enhancement */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse at top, rgba(0, 255, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom, rgba(255, 0, 255, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* MATRIX GRID - Enhanced Scanline Effect */
+        body.matrix-theme .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 255, 0, 0.03) 2px,
+                    rgba(0, 255, 0, 0.03) 4px);
+            pointer-events: none;
+            z-index: 1;
+            animation: scanlineMove 8s linear infinite;
+        }
+
+        @keyframes scanlineMove {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(100px);
+            }
+        }
+
+        /* GOLDEN VAULT - Particle Shimmer Effect */
+        body.gold-theme {
+            background: linear-gradient(180deg, #1a1000 0%, #0a0500 100%);
+        }
+
+        body.gold-theme .shimmer-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(2px 2px at 20% 30%, rgba(255, 215, 0, 0.8), transparent),
+                radial-gradient(2px 2px at 40% 70%, rgba(255, 215, 0, 0.6), transparent),
+                radial-gradient(2px 2px at 60% 20%, rgba(255, 215, 0, 0.7), transparent),
+                radial-gradient(2px 2px at 80% 90%, rgba(255, 215, 0, 0.5), transparent),
+                radial-gradient(3px 3px at 10% 60%, rgba(255, 200, 0, 0.9), transparent),
+                radial-gradient(2px 2px at 90% 40%, rgba(255, 215, 0, 0.6), transparent);
+            background-size: 200px 200px;
+            animation: shimmerPulse 4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes shimmerPulse {
+
+            0%,
+            100% {
+                opacity: 0.6;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.02);
+            }
+        }
+
+        /* RED ALERT (Void Theme) - Warning Pulse and Danger Atmosphere */
+        body.void-theme {
+            animation: redAlertPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes redAlertPulse {
+
+            0%,
+            100% {
+                background-color: #0a0a0f;
+            }
+
+            50% {
+                background-color: #150808;
+            }
+        }
+
+        body.void-theme .danger-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(255, 0, 0, 0.1) 100%);
+            pointer-events: none;
+            z-index: 0;
+            animation: dangerFlicker 1.5s step-start infinite;
+        }
+
+        @keyframes dangerFlicker {
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        body.void-theme .screen {
+            border-color: var(--red);
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.4);
+        }
+
+        body.void-theme .dice-face {
+            border-color: var(--red);
+            box-shadow: 0 0 15px rgba(255, 51, 102, 0.5);
+        }
+
+        body.void-theme .pip {
+            background: var(--red);
+            box-shadow: 0 0 10px var(--red);
+        }
+
+        /* Floating ambient particles keyframe */
+        @keyframes ambientFloat {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.6;
+            }
+
+            25% {
+                transform: translate(20px, -30px) scale(1.1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: translate(-10px, 20px) scale(0.9);
+                opacity: 1;
+            }
+
+            75% {
+                transform: translate(15px, -10px) scale(1.05);
+                opacity: 0.7;
+            }
+        }
+
+        .ambient-particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: ambientFloat 8s ease-in-out infinite;
+        }
+
         .map-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -3896,6 +4141,7 @@
                 <button class="menu-btn" id="classSelectBtn">SELECT CLASS</button>
                 <button class="menu-btn" id="mapSelectBtn">SELECT SECTOR</button>
                 <button class="menu-btn" id="upgradeShopBtn">UPGRADE SHOP</button>
+                <button class="menu-btn" id="skinShopBtn">DICE SKINS</button>
                 <button class="menu-btn" id="achievementsBtn">ACHIEVEMENTS</button>
                 <button class="menu-btn" id="eventsBtn"
                     onclick="document.getElementById('eventsModal').classList.add('show')">EVENTS</button>
@@ -4157,6 +4403,20 @@
         </div>
     </div>
 
+    <!-- Dice Skin Shop Screen -->
+    <div class="screen" id="skinShopScreen">
+        <div class="modal-screen">
+            <h2 class="modal-title">// DICE EXOPLATING //</h2>
+            <p style="color: var(--text-dim); text-align: center; margin-bottom: 20px;">
+                Customize your dice appearance. Visual changes only, no stat effects.
+            </p>
+            <div class="upgrade-grid" id="skinGrid">
+                <!-- Populated by JS -->
+            </div>
+            <button class="close-btn" id="closeSkinShop">CLOSE</button>
+        </div>
+    </div>
+
     <!-- HIGH STAKES SCREEN (THE VOID) -->
     <div class="screen high-stakes-screen" id="highStakesScreen">
         <div class="modal-screen" style="max-width: 900px; border: none; background: transparent; box-shadow: none;">
@@ -4363,8 +4623,14 @@
             maxStreak: 0,
             // NEW: Combo multiplier (decays over time)
             comboMultiplier: 1.0,
+            comboMultiplier: 1.0,
             lastWinTime: 0,
             // NEW: Daily bonus
+            lastDailyBonus: 0,
+            // NEW: Dice Skin
+            currentSkin: 'default',
+            unlockedSkins: ['default'],
+            // Game progress
             lastDailyBonus: null,
             dailyBonusStreak: 0,
             // NEW: Insurance
@@ -4443,6 +4709,15 @@
             { id: 'weightedCoin', name: 'WEIGHTED COIN', desc: '+2% Win Chance per level (Max 5)', baseCost: 100000, maxLevel: 5 },
             { id: 'voidShield', name: 'VOID SHIELD', desc: '-0.1x Loss Penalty per level (Max 5)', baseCost: 150000, maxLevel: 5 },
             { id: 'voidMultiplier', name: 'QUANTUM MULTIPLIER', desc: '+0.5x Payout per level (Max 10)', baseCost: 250000, maxLevel: 10 }
+        ];
+
+        // ========== DICE SKINS ==========
+        const DICE_SKINS = [
+            { id: 'default', name: 'CYBER BLUE', desc: 'Standard Issue Die', price: 0, class: '' },
+            { id: 'gold', name: 'MIDAS TOUCH', desc: 'Solid Gold Plating', price: 25000, class: 'skin-gold' },
+            { id: 'void', name: 'VOID CORE', desc: 'Abyssal Energy', price: 50000, class: 'skin-void' },
+            { id: 'matrix', name: 'CODE STREAM', desc: 'The Matrix is You', price: 75000, class: 'skin-matrix' },
+            { id: 'retro', name: 'SYNTHWAVE', desc: 'Totally Rad 80s', price: 40000, class: 'skin-retro' }
         ];
 
         // ========== CHARACTER CLASSES ==========
@@ -4594,8 +4869,19 @@
             { id: 'void', name: 'RED ALERT', desc: 'High Risk Zone', class: 'void-theme' }
         ];
 
-        // ========== UPDATE LOG DATA ==========
         const UPDATE_LOG = [
+            {
+                version: '3.3',
+                date: '2026-02-02',
+                title: 'DICE SKINS & SECRETS',
+                changes: [
+                    'DICE SKIN SHOP: Added 5 unique styles (Gold, Void, Matrix, etc).',
+                    'VISUAL POLISH: Enhanced Map 3 (Synth) and Map 4 (Gold) with particle effects.',
+                    'BUG FIX: Fixed High-Low gambling soft-lock.',
+                    'BUG FIX: Fixed Rebirth class visibility issues.',
+                    '????: Added a mysterious red fisherman...?'
+                ]
+            },
             {
                 version: '3.2',
                 date: '2026-02-01',
@@ -4952,6 +5238,16 @@
                     const faceEl = document.createElement('div');
                     faceEl.className = `dice-face ${face.class}`;
                     faceEl.setAttribute('data-value', face.value);
+
+                    // Apply selected skin
+                    const currentSkin = gameState.currentSkin || 'default';
+                    const skinData = DICE_SKINS.find(s => s.id === currentSkin);
+                    if (skinData && skinData.class) {
+                        faceEl.classList.add(skinData.class);
+                    } else if (currentSkin !== 'default') {
+                        // Fallback
+                        faceEl.classList.add('skin-' + currentSkin);
+                    }
 
                     for (let p = 0; p < face.pips; p++) {
                         const pip = document.createElement('div');
@@ -5447,6 +5743,12 @@
             CHARACTER_CLASSES.forEach(cls => {
                 const isRebirthLocked = cls.rebirthUnlock && gameState.rebirthLevel < cls.rebirthUnlock;
 
+                // Hide completely if player has never rebirthed and class requires rebirth
+                if (isRebirthLocked && gameState.rebirthLevel === 0) {
+                    // Skip rendering - completely hidden before any rebirth
+                    return;
+                }
+
                 // Unlocked if: Not RebirthLocked AND (No Cost OR Already Purchased)
                 const isUnlocked = !isRebirthLocked && (!cls.cost || gameState.unlockedClasses.includes(cls.id));
                 const isSelected = gameState.selectedClass === cls.id;
@@ -5454,6 +5756,11 @@
 
                 const card = document.createElement('div');
                 card.className = 'class-card' + (isSelected ? ' selected' : '') + (!isUnlocked ? ' locked' : '');
+
+                // Add blur effect for rebirth-locked classes (player has rebirthed but not enough)
+                if (isRebirthLocked) {
+                    card.classList.add('rebirth-locked-blur');
+                }
 
                 let costHtml = '';
                 if (isRebirthLocked) {
@@ -5468,8 +5775,8 @@
 
                 card.innerHTML = `
                     <div class="class-card-icon">${isUnlocked ? cls.icon : '🔒'}</div>
-                    <div class="class-card-name">${cls.name}</div>
-                    <div class="class-card-ability">${cls.ability}</div>
+                    <div class="class-card-name">${isRebirthLocked ? '???' : cls.name}</div>
+                    <div class="class-card-ability">${isRebirthLocked ? 'Unknown Power' : cls.ability}</div>
                     ${costHtml}
                 `;
                 card.onclick = () => selectClass(cls);
@@ -5666,6 +5973,41 @@
                 // Reload with new map param (reloads page to apply theme via init)
                 window.location.href = `index2.html?map=${mapId}`;
             }, 500);
+        }
+
+        // ========== RESOURCE CLEANUP (Abort Safety) ==========
+        function cleanupResources() {
+            // Reset dice rolling state
+            document.querySelectorAll('.dice-scene').forEach(d => {
+                d.classList.remove('rolling', 'win', 'lose');
+            });
+
+            // Reset coin flipping state
+            const coin = document.querySelector('.coin');
+            if (coin) {
+                coin.classList.remove('flipping', 'flipping-heads', 'flipping-tails', 'win', 'lose');
+            }
+
+            // Clear System Overload effect
+            const effect = document.getElementById('systemOverloadEffect');
+            if (effect) effect.classList.remove('active');
+
+            // Reset bet type to default
+            document.querySelectorAll('.bet-type-btn').forEach(b => b.classList.remove('active'));
+            const defaultBtn = document.querySelector('.bet-type-btn[data-type="double"]');
+            if (defaultBtn) defaultBtn.classList.add('active');
+            gameState.currentBetType = 'double';
+            gameState.selectedSubOption = null;
+
+            // Hide sub-options
+            const subOptions = document.getElementById('betSubOptions');
+            if (subOptions) {
+                subOptions.style.display = 'none';
+                subOptions.innerHTML = '';
+            }
+
+            // Reset any pending animation states
+            gameState.isRolling = false;
         }
 
         // ========== END OF RUN REWARDS ==========
@@ -6248,6 +6590,34 @@
         function renderUpgrades() {
             const grid = document.getElementById('upgradeGrid');
             grid.innerHTML = '';
+
+            // OMC EASTER EGG CONTAINER
+            const omcContainer = document.createElement('div');
+            omcContainer.id = 'omcContainer';
+            omcContainer.style.cssText = 'position:absolute; bottom:10px; right:10px; width:50px; height:50px; cursor:pointer; opacity:0; pointer-events:none; transition:opacity 2s;';
+            omcContainer.innerHTML = '<div style="font-size:40px;">🎣</div>'; // Placeholder emoji for Red Fisherman
+
+            // 1% Chance to appear when shop opens
+            if (Math.random() < 0.01) {
+                setTimeout(() => {
+                    omcContainer.style.opacity = '0.5';
+                    omcContainer.style.pointerEvents = 'auto';
+                }, 2000); // Fade in after 2s
+            }
+
+            omcContainer.onclick = (e) => {
+                e.stopPropagation();
+                showFloatingText(e.clientX, e.clientY, '...', '#ff0000');
+                playSound('glitch'); // Optional if glitch sound exists, otherwise maybe 'click'
+                setTimeout(() => {
+                    omcContainer.style.opacity = '0';
+                    omcContainer.style.pointerEvents = 'none';
+                }, 1000);
+            };
+
+            // Append directly to modal-screen if possible, or just grid but absolute positioned
+            // Better to append to the modal content wrapper
+            grid.parentNode.appendChild(omcContainer); // Append to .modal-screen
 
             const discount = getClassUpgradeDiscount();
 
@@ -7149,6 +7519,14 @@
                 showScreen('mapSelect');
             };
 
+            // NEW: Skin Shop button
+            document.getElementById('skinShopBtn').onclick = () => {
+                renderSkinShop();
+                playSound('click');
+                showScreen('skinShop');
+            };
+            document.getElementById('closeSkinShop').onclick = () => { playSound('click'); showScreen('menu'); };
+
             // NEW: Reset Progress Button (Menu)
             const resetMenuBtn = document.getElementById('resetProgressMenuBtn');
             if (resetMenuBtn) {
@@ -7166,6 +7544,9 @@
 
             // Game buttons
             document.getElementById('backToMenuBtn').onclick = () => {
+                // Cleanup any active animations/timers first
+                cleanupResources();
+
                 // Show end of run rewards if player made progress
                 if (gameState.runWins > 0 || gameState.runLosses > 0) {
                     showEndOfRunRewards();

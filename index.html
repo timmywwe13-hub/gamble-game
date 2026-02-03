@@ -1995,6 +1995,24 @@
             color: var(--text-dim);
         }
 
+        /* Rebirth-locked class blur effect */
+        .class-card.rebirth-locked-blur {
+            filter: blur(2px);
+            opacity: 0.6;
+            background: rgba(153, 51, 255, 0.1);
+            border-color: var(--purple);
+        }
+
+        .class-card.rebirth-locked-blur:hover {
+            filter: blur(1px);
+            opacity: 0.75;
+        }
+
+        .class-card.rebirth-locked-blur .class-card-name {
+            color: var(--purple);
+            font-style: italic;
+        }
+
         /* ========== END OF RUN REWARDS ========== */
         .end-run-modal {
             position: fixed;
@@ -4727,6 +4745,12 @@
             CHARACTER_CLASSES.forEach(cls => {
                 const isRebirthLocked = cls.rebirthUnlock && gameState.rebirthLevel < cls.rebirthUnlock;
 
+                // Hide completely if player has never rebirthed and class requires rebirth
+                if (isRebirthLocked && gameState.rebirthLevel === 0) {
+                    // Skip rendering - completely hidden before any rebirth
+                    return;
+                }
+
                 // Unlocked if: Not RebirthLocked AND (No Cost OR Already Purchased)
                 const isUnlocked = !isRebirthLocked && (!cls.cost || gameState.unlockedClasses.includes(cls.id));
                 const isSelected = gameState.selectedClass === cls.id;
@@ -4734,6 +4758,11 @@
 
                 const card = document.createElement('div');
                 card.className = 'class-card' + (isSelected ? ' selected' : '') + (!isUnlocked ? ' locked' : '');
+
+                // Add blur effect for rebirth-locked classes (player has rebirthed but not enough)
+                if (isRebirthLocked) {
+                    card.classList.add('rebirth-locked-blur');
+                }
 
                 let costHtml = '';
                 if (isRebirthLocked) {
@@ -4748,8 +4777,8 @@
 
                 card.innerHTML = `
                     <div class="class-card-icon">${isUnlocked ? cls.icon : '🔒'}</div>
-                    <div class="class-card-name">${cls.name}</div>
-                    <div class="class-card-ability">${cls.ability}</div>
+                    <div class="class-card-name">${isRebirthLocked ? '???' : cls.name}</div>
+                    <div class="class-card-ability">${isRebirthLocked ? 'Unknown Power' : cls.ability}</div>
                     ${costHtml}
                 `;
                 card.onclick = () => selectClass(cls);
@@ -4939,6 +4968,41 @@
                 // Robust navigation for GitHub/Local/Folder roots
                 window.location.href = `index2.html?map=${mapId}`;
             }, 500);
+        }
+
+        // ========== RESOURCE CLEANUP (Abort Safety) ==========
+        function cleanupResources() {
+            // Reset dice rolling state
+            document.querySelectorAll('.dice-scene').forEach(d => {
+                d.classList.remove('rolling', 'win', 'lose');
+            });
+
+            // Reset coin flipping state
+            const coin = document.querySelector('.coin');
+            if (coin) {
+                coin.classList.remove('flipping', 'flipping-heads', 'flipping-tails', 'win', 'lose');
+            }
+
+            // Clear System Overload effect
+            const effect = document.getElementById('systemOverloadEffect');
+            if (effect) effect.classList.remove('active');
+
+            // Reset bet type to default
+            document.querySelectorAll('.bet-type-btn').forEach(b => b.classList.remove('active'));
+            const defaultBtn = document.querySelector('.bet-type-btn[data-type="double"]');
+            if (defaultBtn) defaultBtn.classList.add('active');
+            gameState.currentBetType = 'double';
+            gameState.selectedSubOption = null;
+
+            // Hide sub-options
+            const subOptions = document.getElementById('betSubOptions');
+            if (subOptions) {
+                subOptions.style.display = 'none';
+                subOptions.innerHTML = '';
+            }
+
+            // Reset any pending animation states
+            gameState.isRolling = false;
         }
 
         // ========== END OF RUN REWARDS ==========
@@ -6070,6 +6134,9 @@
 
             // Game buttons
             document.getElementById('backToMenuBtn').onclick = () => {
+                // Cleanup any active animations/timers first
+                cleanupResources();
+
                 // Show end of run rewards if player made progress
                 if (gameState.runWins > 0 || gameState.runLosses > 0) {
                     showEndOfRunRewards();
