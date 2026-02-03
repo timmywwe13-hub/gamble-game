@@ -18,6 +18,8 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
     - **Parity**: Bet on **Even** or **Odd**.
     - **Prime Roll**: Bet on Prime numbers (2, 3, 5).
     - **The Void (High Stakes)**: Unlock at Rebirth 4. Flip for **3x Win** or **1.5x Loss**.
+- **Dice Skin Shop**: Customize your dice with 5 unique styles (Gold, Void, Matrix, etc.) for pure visual flair.
+- **Hidden Secrets**: Keep an eye out for "Old Man Consequences" in the Upgrade Shop...
 - **Progression System**:
   - **Upgrades**: Purchase "Loaded Dice", "Safety Nets", "Lucky Charms", and more from the Upgrade Shop.
   - **Expanded Class System**: 8 New Buyable Classes!
@@ -59,7 +61,11 @@ Neon Double-Down is a cyberpunk-themed high-stakes dice gambling game. You play 
   - **Rewards**: Permanent win chance (capped at **25%**), starting chip bonuses (up to 5,000), and **Chip Multipliers** (up to **2.5x**).
   - **Singularity**: Reach Tier 18 for **2.5x Chip Multiplier** to maximize your profits!
   - **Prestige**: Rebirth now resets upgrades for a true challenge!
-- **Update Log**: In-game "What's New" popup keeps you informed of changes.
+- **Update Log**: In-game "What's New" popup keeps you informed of changes (v3.3 Added).
+- **Update Log v3.3**:
+  - **Dice Skins**: New shop to customize dice appearance.
+  - **Visual Polish**: Enhanced effects for Synthwave and Golden Vault maps.
+  - **Secrets**: Added a mysterious fisherman.
 - **Mobile & Desktop Compatible**: Optimized UI for phones, tablets, and laptops.
 - **iOS Class Purchase Fix**: Custom touch-friendly modals ensure class purchases work on all devices including iPhone.
 - **Quick Reset**: Reset your progress directly from the main menu with the **🔄 RESET PROGRESS** button.
